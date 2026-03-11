@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦞 Lobster Terminal</title>
+<title>🦞 CookedClaw
+
+ Terminal</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 :root{
@@ -17,25 +19,25 @@
 body{background:var(--bg);color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:12px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:10px}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
 body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,transparent 55%,rgba(0,0,0,.6) 100%);pointer-events:none;z-index:9998}
-.win{width:100%;max-width:1440px;border:1px  SOLid var(--b3);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,58,92,.07),0 0 80px rgba(255,58,92,.04),0 20px 80px rgba(0,0,0,.97)}
+.win{width:100%;max-width:1440px;border:1px solid var(--b3);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,58,92,.07),0 0 80px rgba(255,58,92,.04),0 20px 80px rgba(0,0,0,.97)}
 
 /* TITLEBAR */
-.tbar{background:var(--bg4);border-bottom:1px  SOLid var(--b2);padding:9px 14px;display:flex;align-items:center;gap:10px;user-select:none}
+.tbar{background:var(--bg4);border-bottom:1px solid var(--b2);padding:9px 14px;display:flex;align-items:center;gap:10px;user-select:none}
 .tl{display:flex;gap:6px}
 .dot{width:12px;height:12px;border-radius:50%;cursor:pointer}.dot.r{background:#ff5f56}.dot.y{background:#febc2e}.dot.g{background:#28c840}
 .ttl{flex:1;text-align:center;font-size:11px;color:var(--t2);letter-spacing:.08em}.ttl b{color:var(--lb)}
 
 /* LOGOBAR */
-.lbar{background:var(--bg2);border-bottom:1px  SOLid var(--b1);padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lbar{background:var(--bg2);border-bottom:1px solid var(--b1);padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .logo{display:flex;align-items:center;gap:8px}
 .logo-e{font-size:18px;filter:drop-shadow(0 0 10px rgba(255,58,92,.6))}
 .logo-n{font-size:14px;font-weight:700;color:var(--lb);letter-spacing:.16em;text-shadow:0 0 28px rgba(255,58,92,.3)}
 .logo-s{font-size:8px;color:var(--t3);letter-spacing:.22em;margin-top:1px}
 .navtabs{display:flex;gap:2px}
-.ntab{padding:3px 11px;font-size:10px;color:var(--t3);border:1px  SOLid transparent;border-radius:3px;cursor:pointer;letter-spacing:.06em;font-family:inherit;background:none;transition:all .14s}
+.ntab{padding:3px 11px;font-size:10px;color:var(--t3);border:1px solid transparent;border-radius:3px;cursor:pointer;letter-spacing:.06em;font-family:inherit;background:none;transition:all .14s}
 .ntab:hover{color:var(--t1);border-color:var(--b3)}.ntab.on{color:var(--lb);border-color:var(--lb);background:rgba(255,58,92,.07)}
 .status-pills{display:flex;gap:6px;align-items:center}
-.spill{display:flex;align-items:center;gap:4px;padding:2px 9px;border:1px  SOLid var(--b2);border-radius:20px;font-size:10px;color:var(--t3)}
+.spill{display:flex;align-items:center;gap:4px;padding:2px 9px;border:1px solid var(--b2);border-radius:20px;font-size:10px;color:var(--t3)}
 .spill-dot{width:6px;height:6px;border-radius:50%;background:var(--t3)}
 .spill-dot.live{background:var(--green);box-shadow:0 0 5px var(--green);animation:pls 1.8s infinite}
 .spill-dot.err{background:var(--red);animation:none}
@@ -43,46 +45,46 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 @keyframes pls{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* STATS */
-.statsrow{background:var(--bg3);border-bottom:1px  SOLid var(--b2);padding:7px 14px;display:flex;gap:0;overflow-x:auto}
-.st{display:flex;flex-direction:column;gap:1px;padding:0 16px;border-right:1px  SOLid var(--b2);min-width:76px}
+.statsrow{background:var(--bg3);border-bottom:1px solid var(--b2);padding:7px 14px;display:flex;gap:0;overflow-x:auto}
+.st{display:flex;flex-direction:column;gap:1px;padding:0 16px;border-right:1px solid var(--b2);min-width:76px}
 .st:first-child{padding-left:2px}.st:last-child{border-right:none}
 .st-l{font-size:9px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}
 .st-v{font-size:14px;font-weight:700;margin-top:2px}
 .vw{color:var(--white)}.vg{color:var(--green)}.vr{color:var(--red)}.vy{color:var(--yellow)}.vgo{color:var(--gold)}.vmg{color:var(--mg)}.vcy{color:var(--cyan)}.vlb{color:var(--lb)}
 
 /* PNL HERO */
-.pnl-hero{background:var(--bg2);border-bottom:1px  SOLid var(--b2);padding:9px 14px;display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
-.pblk{display:flex;flex-direction:column;justify-content:center;padding:0 16px;border-right:1px  SOLid var(--b2)}
+.pnl-hero{background:var(--bg2);border-bottom:1px solid var(--b2);padding:9px 14px;display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pblk{display:flex;flex-direction:column;justify-content:center;padding:0 16px;border-right:1px solid var(--b2)}
 .pblk:first-child{padding-left:2px}.pblk:last-child{border-right:none;margin-left:auto}
 .plbl{font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .pbig{font-size:26px;font-weight:700;transition:color .3s;letter-spacing:.01em}
 .pbig.pos{color:var(--green);text-shadow:0 0 24px rgba(0,232,122,.25)}.pbig.neg{color:var(--red);text-shadow:0 0 24px rgba(255,45,85,.2)}
 .psub{font-size:10px;color:var(--t2);margin-top:2px}
 .pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.pill{display:flex;flex-direction:column;align-items:center;padding:5px 10px;border-radius:6px;border:1px  SOLid var(--b2);background:var(--bg3);min-width:60px;gap:2px}
+.pill{display:flex;flex-direction:column;align-items:center;padding:5px 10px;border-radius:6px;border:1px solid var(--b2);background:var(--bg3);min-width:60px;gap:2px}
 .pill-v{font-size:12px;font-weight:700}.pill-l{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em}
 
 /* SPARK */
-.sparkrow{height:52px;background:var(--bg);border-bottom:1px  SOLid var(--b2);position:relative}
+.sparkrow{height:52px;background:var(--bg);border-bottom:1px solid var(--b2);position:relative}
 #spark{width:100%;height:52px;display:block}
 
 /* MAIN 3 COL */
 .main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,390px)}
 
 /* PANEL */
-.panel{display:flex;flex-direction:column;border-right:1px  SOLid var(--b2);background:var(--bg);overflow:hidden}
+.panel{display:flex;flex-direction:column;border-right:1px solid var(--b2);background:var(--bg);overflow:hidden}
 .panel:last-child{border-right:none}
-.phdr{background:var(--bg4);border-bottom:1px  SOLid var(--b2);padding:6px 12px;display:flex;align-items:center;gap:7px;flex-shrink:0}
+.phdr{background:var(--bg4);border-bottom:1px solid var(--b2);padding:6px 12px;display:flex;align-items:center;gap:7px;flex-shrink:0}
 .phdr-t{font-size:11px;font-weight:600;color:var(--white);letter-spacing:.06em}
 .phdr-r{margin-left:auto;display:flex;align-items:center;gap:5px}
 .pbadge{font-size:9px;padding:1px 7px;border-radius:3px;font-weight:700;letter-spacing:.05em}
-.pb-live{background:rgba(0,232,122,.1);color:var(--green);border:1px  SOLid rgba(0,232,122,.25)}
-.pb-real{background:rgba(0,212,255,.1);color:var(--cyan);border:1px  SOLid rgba(0,212,255,.25)}
-.pb-auto{background:rgba(255,208,96,.1);color:var(--yellow);border:1px  SOLid rgba(255,208,96,.25)}
+.pb-live{background:rgba(0,232,122,.1);color:var(--green);border:1px solid rgba(0,232,122,.25)}
+.pb-real{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.25)}
+.pb-auto{background:rgba(255,208,96,.1);color:var(--yellow);border:1px solid rgba(255,208,96,.25)}
 
 /* FILTERBAR */
-.fbar{background:var(--bg3);border-bottom:1px  SOLid var(--b2);padding:5px 10px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;flex-shrink:0}
-.ftag{padding:2px 8px;font-size:9px;border:1px  SOLid var(--b2);border-radius:3px;cursor:pointer;color:var(--t3);background:none;font-family:inherit;transition:all .13s;letter-spacing:.04em;white-space:nowrap}
+.fbar{background:var(--bg3);border-bottom:1px solid var(--b2);padding:5px 10px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.ftag{padding:2px 8px;font-size:9px;border:1px solid var(--b2);border-radius:3px;cursor:pointer;color:var(--t3);background:none;font-family:inherit;transition:all .13s;letter-spacing:.04em;white-space:nowrap}
 .ftag:hover{color:var(--t1);border-color:var(--b3)}
 .ftag.ow{color:var(--white);border-color:var(--white);background:rgba(240,240,255,.06)}
 .ftag.og{color:var(--green);border-color:var(--green);background:rgba(0,232,122,.07)}
@@ -93,21 +95,21 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .ftag.ogo{color:var(--gold);border-color:var(--gold);background:rgba(255,200,55,.07)}
 .fsep{width:1px;height:16px;background:var(--b2);margin:0 2px}
 .flbl{font-size:9px;color:var(--t3);letter-spacing:.06em;padding:0 2px}
-.finput{background:var(--bg2);border:1px  SOLid var(--b2);border-radius:3px;color:var(--t1);font-family:inherit;font-size:9px;padding:2px 6px;width:68px;outline:none}
+.finput{background:var(--bg2);border:1px solid var(--b2);border-radius:3px;color:var(--t1);font-family:inherit;font-size:9px;padding:2px 6px;width:68px;outline:none}
 .finput:focus{border-color:var(--lb);color:var(--white)}
 
 /* TABLE */
 .tscroll{overflow-y:auto;flex:1}
 .tscroll::-webkit-scrollbar{width:3px}.tscroll::-webkit-scrollbar-thumb{background:var(--b2)}
 table{width:100%;border-collapse:collapse;min-width:500px}
-thead th{padding:5px 9px;text-align:left;color:var(--t3);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;background:var(--bg3);border-bottom:1px  SOLid var(--b2);position:sticky;top:0;z-index:5;cursor:pointer;transition:color .14s;user-select:none}
+thead th{padding:5px 9px;text-align:left;color:var(--t3);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;background:var(--bg3);border-bottom:1px solid var(--b2);position:sticky;top:0;z-index:5;cursor:pointer;transition:color .14s;user-select:none}
 thead th:hover{color:var(--t1)}
 thead th.sa::after{content:' ▲';font-size:8px;color:var(--lb)}
 thead th.sd::after{content:' ▼';font-size:8px;color:var(--lb)}
 thead th:first-child{text-align:center;width:26px;cursor:default}
-tbody tr{border-bottom:1px  SOLid rgba(22,22,36,.95);cursor:pointer;transition:background .1s}
+tbody tr{border-bottom:1px solid rgba(22,22,36,.95);cursor:pointer;transition:background .1s}
 tbody tr:hover{background:rgba(255,58,92,.03)}
-tbody tr.sel{background:rgba(255,208,96,.035);border-left:2px  SOLid rgba(255,208,96,.4)}
+tbody tr.sel{background:rgba(255,208,96,.035);border-left:2px solid rgba(255,208,96,.4)}
 td{padding:6px 9px;font-size:11px;white-space:nowrap}
 .tdn{text-align:center;color:var(--t3);font-size:9px}
 .tok{font-weight:700;letter-spacing:.04em}
@@ -124,10 +126,10 @@ tr.an{animation:rIn .4s ease both}tr.amg{animation:rMg .5s ease both}
 tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
 
 /* BOT ROWS */
-.brow{display:flex;align-items:center;gap:6px;padding:6px 12px;border-bottom:1px  SOLid rgba(22,22,36,.9);cursor:pointer;transition:background .1s;animation:rIn .35s ease both}
+.brow{display:flex;align-items:center;gap:6px;padding:6px 12px;border-bottom:1px solid rgba(22,22,36,.9);cursor:pointer;transition:background .1s;animation:rIn .35s ease both}
 .brow:hover{background:rgba(255,255,255,.015)}
 .bside{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;min-width:28px;text-align:center}
-.bside.b{background:rgba(0,232,122,.14);color:var(--green);border:1px  SOLid rgba(0,232,122,.25)}
+.bside.b{background:rgba(0,232,122,.14);color:var(--green);border:1px solid rgba(0,232,122,.25)}
 .bsym{font-weight:700;font-size:11px;min-width:52px}
 .bdet{font-size:9px;color:var(--t2);line-height:1.6}
 .bpnl{font-weight:700;font-size:11px;text-align:right;line-height:1.5}
@@ -139,19 +141,19 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
 /* FEED */
 .flist{overflow-y:auto;flex:1;max-height:440px}
 .flist::-webkit-scrollbar{width:3px}.flist::-webkit-scrollbar-thumb{background:var(--b2)}
-.fi{padding:7px 12px;border-bottom:1px  SOLid rgba(22,22,36,.75);display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:background .1s;animation:fiIn .25s ease;font-size:11px}
+.fi{padding:7px 12px;border-bottom:1px solid rgba(22,22,36,.75);display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:background .1s;animation:fiIn .25s ease;font-size:11px}
 .fi:hover{background:rgba(255,255,255,.014)}
 @keyframes fiIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
-.fi.fi-mg{border-left:2px  SOLid var(--mg)}
-.fi.fi-bot{border-left:2px  SOLid var(--yellow)}
+.fi.fi-mg{border-left:2px solid var(--mg)}
+.fi.fi-bot{border-left:2px solid var(--yellow)}
 .fi-top{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .fb{padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.04em}
-.fb.NEW{background:rgba(0,212,255,.13);color:var(--cyan);border:1px  SOLid rgba(0,212,255,.28)}
-.fb.BUY{background:rgba(0,232,122,.13);color:var(--green);border:1px  SOLid rgba(0,232,122,.28)}
-.fb.SELL{background:rgba(255,45,85,.13);color:var(--red);border:1px  SOLid rgba(255,45,85,.28)}
-.fb.MG{background:rgba(155,114,250,.13);color:var(--mg);border:1px  SOLid rgba(155,114,250,.28)}
-.fb.BOT{background:rgba(255,208,96,.13);color:var(--yellow);border:1px  SOLid rgba(255,208,96,.28)}
-.fb.MIGRATED{background:rgba(155,114,250,.13);color:var(--mg);border:1px  SOLid rgba(155,114,250,.28)}
+.fb.NEW{background:rgba(0,212,255,.13);color:var(--cyan);border:1px solid rgba(0,212,255,.28)}
+.fb.BUY{background:rgba(0,232,122,.13);color:var(--green);border:1px solid rgba(0,232,122,.28)}
+.fb.SELL{background:rgba(255,45,85,.13);color:var(--red);border:1px solid rgba(255,45,85,.28)}
+.fb.MG{background:rgba(155,114,250,.13);color:var(--mg);border:1px solid rgba(155,114,250,.28)}
+.fb.BOT{background:rgba(255,208,96,.13);color:var(--yellow);border:1px solid rgba(255,208,96,.28)}
+.fb.MIGRATED{background:rgba(155,114,250,.13);color:var(--mg);border:1px solid rgba(155,114,250,.28)}
 .fsym{font-weight:700;font-size:11px}
 .fsym.new{color:var(--cyan)}.fsym.buy{color:var(--green)}.fsym.sell{color:var(--red)}.fsym.mg{color:var(--mg)}.fsym.bot{color:var(--yellow)}
 .ft{color:var(--t3);font-size:9px;margin-left:auto}
@@ -166,7 +168,7 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
 .empty-msg{padding:22px;text-align:center;color:var(--t3);font-size:10px;line-height:1.9}
 
 /* STATUSBAR */
-.stbar{background:var(--bg4);border-top:1px  SOLid var(--b2);padding:5px 14px;display:flex;align-items:center;gap:14px;font-size:10px;color:var(--t2)}
+.stbar{background:var(--bg4);border-top:1px solid var(--b2);padding:5px 14px;display:flex;align-items:center;gap:14px;font-size:10px;color:var(--t2)}
 .stchain{color:var(--lb);font-weight:700;letter-spacing:.1em}
 .str{margin-left:auto;color:var(--t3)}
 
@@ -183,7 +185,7 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
   <!-- Titlebar -->
   <div class="tbar">
     <div class="tl"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-    <div class="ttl"><b>lobster</b> — OpenClaw Live terminal · DYOR · Fees will be burned into the currency. </div>
+    <div class="ttl"><b>CookedClaw</b> — OpenClaw Live terminal · DYOR · Fees will be burned into the currency.</div>
     <div style="width:10px"></div>
   </div>
 
@@ -191,7 +193,9 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
   <div class="lbar">
     <div class="logo">
       <span class="logo-e">🦞</span>
-      <div><div class="logo-n">LOBSTER</div><div class="logo-s">BOT TERMINAL</div></div>
+      <div><div class="logo-n">CookedClaw
+
+</div><div class="logo-s">BOT TERMINAL</div></div>
     </div>
     <div class="navtabs">
       <button class="ntab on" onclick="setTab(this,'watch')">WATCHLIST</button>
@@ -233,10 +237,10 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
     </div>
     <div class="pblk">
       <div class="plbl">Balance</div>
-      <div class="st-v vw" id="pnl-bal" style="font-size:18px;font-weight:700">10.000  SOL</div>
-      <div class="psub">start: 10.000 SOL · <span id="pnl-usd">$1,500</span></div>
+      <div class="st-v vw" id="pnl-bal" style="font-size:18px;font-weight:700">10.000 ◎</div>
+      <div class="psub">start: 10.000◎ · <span id="pnl-usd">$1,500</span></div>
     </div>
-    <div class="pblk" style="margin-left:auto;border-left:1px  SOLid var(--b2)">
+    <div class="pblk" style="margin-left:auto;border-left:1px solid var(--b2)">
       <div class="pills">
         <div class="pill"><div class="pill-v vg"  id="pw">0</div><div class="pill-l">Wins</div></div>
         <div class="pill"><div class="pill-v vr"  id="pl">0</div><div class="pill-l">Losses</div></div>
@@ -340,9 +344,9 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
         </div>
       </div>
       <div class="fbar">
-        <span class="flbl">MIN  SOL</span>
-        <input class="finput" id="feed- SOL" placeholder="0.0" oninput="applyFeedFilter()">
-        <span style="color:var(--t3);font-size:9px"> SOL</span>
+        <span class="flbl">MIN SOL</span>
+        <input class="finput" id="feed-sol" placeholder="0.0" oninput="applyFeedFilter()">
+        <span style="color:var(--t3);font-size:9px">◎</span>
         <div class="fsep"></div>
         <span class="flbl">MIN MC $</span>
         <input class="finput" id="feed-mc" placeholder="0" oninput="applyFeedFilter()">
@@ -356,15 +360,15 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
 
   <!-- Status bar -->
   <div class="stbar">
-    <span class="stchain"> SOL</span>
+    <span class="stchain">SOL</span>
     <span class="spill-dot live" style="margin:0"></span>
     <span id="clock"></span>
     <span>|</span>
     <span>pumpswap · migrated · real tokens · bot auto-trade</span>
     <span id="ls-usage" style="color:var(--t3);font-size:9px"></span>
     <span style="margin-left:auto;display:flex;gap:6px;align-items:center">
-      <button onclick="exportTrades()" style="background:rgba(0,212,255,.08);border:1px  SOLid rgba(0,212,255,.2);color:var(--cyan);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">⬇ EXPORT</button>
-      <button onclick="lsClear()" style="background:rgba(255,45,85,.08);border:1px  SOLid rgba(255,45,85,.2);color:var(--red);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">✕ RESET</button>
+      <button onclick="exportTrades()" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--cyan);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">⬇ EXPORT</button>
+      <button onclick="lsClear()" style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2);color:var(--red);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">✕ RESET</button>
       <span style="color:var(--t3)">LOBSTER v9.1</span>
     </span>
   </div>
@@ -374,8 +378,8 @@ tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
 // ═══════════════════════════════════════════════════════
 //  CONFIG
 // ═══════════════════════════════════════════════════════
-const  SOL_USD     = 150;
-const BOT_BUY_ SOL = 0.20;
+const SOL_USD     = 150;
+const BOT_BUY_SOL = 0.20;
 const BOT_BUDGET  = 10.0;
 const TP_PCT      = 0.45;
 const SL_PCT      = 0.25;
@@ -407,7 +411,7 @@ const pad    = n=>String(n).padStart(2,'0');
 const ts     = ()=>{ const d=new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
 const fmt$   = n=>{ if(!n&&n!==0)return'—'; const a=Math.abs(n),s=n<0?'-':''; return a>=1e9?s+'$'+(a/1e9).toFixed(2)+'B':a>=1e6?s+'$'+(a/1e6).toFixed(2)+'M':a>=1e3?s+'$'+(a/1e3).toFixed(1)+'K':s+'$'+a.toFixed(2); };
 const fmtP   = n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
-const fmt SOL = n=>!n&&n!==0?'—':parseFloat(n).toFixed(3)+' SOL';
+const fmtSol = n=>!n&&n!==0?'—':parseFloat(n).toFixed(3)+'◎';
 const fmtAge = ms=>{ const s=(Date.now()-ms)/1000; return s<60?Math.floor(s)+'s':s<3600?Math.floor(s/60)+'m':s<86400?Math.floor(s/3600)+'h':Math.floor(s/86400)+'d'; };
 const fmtPx  = p=>{ if(!p)return'—'; const n=parseFloat(p); return n<0.0001?'$'+n.toExponential(2):n<1?'$'+n.toFixed(6):'$'+n.toFixed(4); };
 const rand   = (a,b)=>a+Math.random()*(b-a);
@@ -415,8 +419,8 @@ const randI  = (a,b)=>Math.floor(rand(a,b+1));
 const colorFor = sym=>{ if(!symColors[sym])symColors[sym]=COLORS[(colorIdx++)%COLORS.length]; return symColors[sym]; };
 const pumpUrl   = m=>`https://pump.fun/coin/${m}`;
 const dexUrl    = (ch,pair)=>`https://dexscreener.com/${ch}/${pair}`;
-const  SOLscanT  = m=>`https:// SOLscan.io/token/${m}`;
-const  SOLscanTx = s=>`https:// SOLscan.io/tx/${s}`;
+const solscanT  = m=>`https://solscan.io/token/${m}`;
+const solscanTx = s=>`https://solscan.io/tx/${s}`;
 
 // ═══════════════════════════════════════════════════════
 //  CLOCK
@@ -443,9 +447,9 @@ async function fetchRealTokens(){
     // Fetch top pumpswap (migrated) pairs by volume from DexScreener
     // Multiple queries to get diverse high-volume migrated tokens
     const endpoints = [
-      'https://api.dexscreener.com/latest/dex/search?q=pumpswap+ SOL',
-      'https://api.dexscreener.com/latest/dex/search?q=pump+fun+migrated+ SOLana',
-      'https://api.dexscreener.com/latest/dex/search?q= SOLana+pump+meme+token',
+      'https://api.dexscreener.com/latest/dex/search?q=pumpswap+sol',
+      'https://api.dexscreener.com/latest/dex/search?q=pump+fun+migrated+solana',
+      'https://api.dexscreener.com/latest/dex/search?q=solana+pump+meme+token',
     ];
 
     const results = await Promise.allSettled(endpoints.map(u=>fetch(u).then(r=>r.json())));
@@ -453,7 +457,7 @@ async function fetchRealTokens(){
     for(const r of results){
       if(r.status==='fulfilled' && r.value?.pairs){
         allPairs.push(...r.value.pairs.filter(p=>
-          p.chainId===' SOLana' &&
+          p.chainId==='solana' &&
           (p.dexId==='pumpswap' || p.dexId==='pumpfun') &&
           p.liquidity?.usd > 1000 &&
           (p.volume?.h24 || 0) > 500
@@ -469,10 +473,10 @@ async function fetchRealTokens(){
     allPairs.sort((a,b)=>(b.volume?.h24||0)-(a.volume?.h24||0));
     allPairs = allPairs.slice(0,50);
 
-    con SOLe.log('[🦞 DexScreener] fetched',allPairs.length,'pairs');
+    console.log('[🦞 DexScreener] fetched',allPairs.length,'pairs');
 
     if(!allPairs.length){
-      con SOLe.warn('[🦞] No pairs returned, keeping existing watchlist');
+      console.warn('[🦞] No pairs returned, keeping existing watchlist');
       setDot('d-ds',' live','DS: no pairs');
       document.getElementById('loading-bar').style.display='none';
       return;
@@ -484,7 +488,7 @@ async function fetchRealTokens(){
       name:      p.baseToken?.name || p.baseToken?.symbol || '???',
       mint:      p.baseToken?.address || '',
       pairAddr:  p.pairAddress || '',
-      chainId:   p.chainId || ' SOLana',
+      chainId:   p.chainId || 'solana',
       dexId:     p.dexId || 'pumpswap',
       type:      p.dexId==='pumpswap' ? 'MIGRATED' : 'NEW',
       h1:        p.priceChange?.h1  ?? null,
@@ -538,8 +542,8 @@ async function fetchRealTokens(){
           {l:'mc',    v:fmt$(t.mc), vc:'fv-cy'},
           {l:'txns',  v:(t.txns||0).toLocaleString()},
         ],
-        mint:t.mint, sig:'',  SOLAmt:0, mcUsd:t.mc,
-        pairUrl: t.pairAddr ? dexUrl(t.chainId||' SOLana',t.pairAddr) : null
+        mint:t.mint, sig:'', solAmt:0, mcUsd:t.mc,
+        pairUrl: t.pairAddr ? dexUrl(t.chainId||'solana',t.pairAddr) : null
       });
     });
 
@@ -554,7 +558,7 @@ async function fetchRealTokens(){
     renderBot();
 
   } catch(e){
-    con SOLe.error('[🦞 DexScreener error]',e);
+    console.error('[🦞 DexScreener error]',e);
     setDot('d-ds',' err','DS ERR');
   }
   document.getElementById('loading-bar').style.display='none';
@@ -576,10 +580,10 @@ function connectWS(){
     // Subscribe to trades of watched tokens
     const mints=watchList.slice(0,10).map(t=>t.mint).filter(Boolean);
     if(mints.length) ws.send(JSON.stringify({method:'subscribeTokenTrade',keys:mints}));
-    con SOLe.log('[🦞] WS open');
+    console.log('[🦞] WS open');
   };
   ws.onmessage=e=>{
-    try{ const d=JSON.parse(e.data); con SOLe.log('[🦞 WS]',d); onWS(d); wsEventCount++; document.getElementById('s-wse').textContent=wsEventCount; }catch(err){}
+    try{ const d=JSON.parse(e.data); console.log('[🦞 WS]',d); onWS(d); wsEventCount++; document.getElementById('s-wse').textContent=wsEventCount; }catch(err){}
   };
   ws.onerror=()=>setDot('d-ws',' err','WS ERR');
   ws.onclose=evt=>{ wsOpen=false; setDot('d-ws',' err',`CLOSED(${evt.code})`); schedWS(); };
@@ -594,45 +598,45 @@ function onWS(d){
   const mint=d.mint||'', sym=d.symbol||(mint?mint.slice(0,6):'???'), name=d.name||sym;
 
   if(type==='create'){
-    const mc=(parseFloat(d.marketCap SOL)||0)* SOL_USD;
-    const  SOL=parseFloat(d. SOLAmount)||0;
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
+    const sol=parseFloat(d.solAmount)||0;
     // Add to watchlist if not present
     if(!watchList.find(t=>t.mint===mint)){
-      watchList.unshift({sym,name,mint,pairAddr:'',chainId:' SOLana',dexId:'pumpfun',type:'NEW',h1:0,h24:0,vol: SOL* SOL_USD,liq:0,mc,txns:1,price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
+      watchList.unshift({sym,name,mint,pairAddr:'',chainId:'solana',dexId:'pumpfun',type:'NEW',h1:0,h24:0,vol:sol*SOL_USD,liq:0,mc,txns:1,price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
       if(watchList.length>60) watchList.pop();
       document.getElementById('s-tr').textContent=watchList.length;
     }
     pushFeedItem('nw',{badge:'NEW',bc:'NEW',sc:'new',sym,t:ts(),rows:[
-      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:' SOL',v:fmt SOL( SOL),vc:'fv-g'}
-    ],mint,sig:d.signature||'', SOLAmt: SOL,mcUsd:mc,pairUrl:null});
+      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:'sol',v:fmtSol(sol),vc:'fv-g'}
+    ],mint,sig:d.signature||'',solAmt:sol,mcUsd:mc,pairUrl:null});
 
   } else if(type==='buy'||type==='sell'){
     const isBuy=type==='buy';
-    const raw SOL=parseFloat(d. SOLAmount)||0;
-    const  SOL=raw SOL>1000?raw SOL/1e9:raw SOL;
-    const mc=(parseFloat(d.marketCap SOL)||0)* SOL_USD;
+    const rawSol=parseFloat(d.solAmount)||0;
+    const sol=rawSol>1000?rawSol/1e9:rawSol;
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
     // Update price in watchlist
     const tok=watchList.find(t=>t.mint===mint);
     if(tok){ tok.mc=mc||tok.mc; tok.txns=(tok.txns||0)+1; }
     // Tick bot position
     botTickPos(mint,mc,sym);
-    const pUrl=tok?.pairAddr?dexUrl(tok.chainId||' SOLana',tok.pairAddr):null;
+    const pUrl=tok?.pairAddr?dexUrl(tok.chainId||'solana',tok.pairAddr):null;
     pushFeedItem('tr',{badge:type.toUpperCase(),bc:type.toUpperCase(),sc:type,sym,t:ts(),rows:[
-      {l:'amt',v:fmt SOL( SOL),vc:isBuy?'fv-g':'fv-r'},{l:'≈',v:fmt$( SOL* SOL_USD)},{l:'mc~',v:fmt$(mc),vc:'fv-go'}
-    ],mint,sig:d.signature||'', SOLAmt: SOL,mcUsd:mc,pairUrl:pUrl});
+      {l:'amt',v:fmtSol(sol),vc:isBuy?'fv-g':'fv-r'},{l:'≈',v:fmt$(sol*SOL_USD)},{l:'mc~',v:fmt$(mc),vc:'fv-go'}
+    ],mint,sig:d.signature||'',solAmt:sol,mcUsd:mc,pairUrl:pUrl});
 
   } else if(type==='migrate'){
-    const mc=(parseFloat(d.marketCap SOL)||0)* SOL_USD;
-    const liq SOL=parseFloat(d.v SOLInBondingCurve)||0;
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
+    const liqSol=parseFloat(d.vSolInBondingCurve)||0;
     mgCount++; document.getElementById('s-mg').textContent=mgCount; document.getElementById('pmg').textContent=mgCount;
     if(!watchList.find(t=>t.mint===mint)){
-      watchList.unshift({sym,name,mint,pairAddr:'',chainId:' SOLana',dexId:'pumpswap',type:'MIGRATED',h1:rand(10,80),h24:rand(50,500),vol:liq SOL* SOL_USD*2,liq:liq SOL* SOL_USD,mc,txns:randI(50,500),price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
+      watchList.unshift({sym,name,mint,pairAddr:'',chainId:'solana',dexId:'pumpswap',type:'MIGRATED',h1:rand(10,80),h24:rand(50,500),vol:liqSol*SOL_USD*2,liq:liqSol*SOL_USD,mc,txns:randI(50,500),price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
       if(watchList.length>60) watchList.pop();
     }
     pushFeedItem('mg',{badge:'MIGRATED',bc:'MIGRATED',sc:'mg',isMg:true,sym,t:ts(),rows:[
-      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:'liq~',v:fmt SOL(liq SOL),vc:'fv-mg'}
-    ],mint,sig:d.signature||'', SOLAmt:liq SOL,mcUsd:mc,pairUrl:null});
-    botDecide({sym,name,mint,pairAddr:'',chainId:' SOLana',type:'MIGRATED',mc,vol:liq SOL* SOL_USD,liq:liq SOL* SOL_USD,txns:100,url:pumpUrl(mint)});
+      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:'liq~',v:fmtSol(liqSol),vc:'fv-mg'}
+    ],mint,sig:d.signature||'',solAmt:liqSol,mcUsd:mc,pairUrl:null});
+    botDecide({sym,name,mint,pairAddr:'',chainId:'solana',type:'MIGRATED',mc,vol:liqSol*SOL_USD,liq:liqSol*SOL_USD,txns:100,url:pumpUrl(mint)});
   }
   if(activeTab==='watch') renderWatchList();
 }
@@ -646,30 +650,30 @@ const pendingBotQueue = []; // trades waiting to appear in panel
 function botDecide(tok){
   if(!tok.mint) return;
   if(openPos[tok.mint]) return;
-  if(botBal<BOT_BUY_ SOL) return;
+  if(botBal<BOT_BUY_SOL) return;
   if((tok.mc||0)<3000||(tok.mc||0)>3000000) return;
   if(Math.random()>0.40) return;
 
   // Real token URL — prefer dexscreener pair page, fallback to pump.fun
   const tokenUrl = tok.pairAddr
-    ? dexUrl(tok.chainId||' SOLana', tok.pairAddr)
+    ? dexUrl(tok.chainId||'solana', tok.pairAddr)
     : (tok.url || pumpUrl(tok.mint));
 
   const trade={
     id:Date.now(), sym:tok.sym, name:tok.name||tok.sym, mint:tok.mint,
     url: tokenUrl,
     pumpUrl: pumpUrl(tok.mint),
-    dexUrl: tok.pairAddr ? dexUrl(tok.chainId||' SOLana',tok.pairAddr) : null,
-     SOLscanUrl:  SOLscanT(tok.mint),
+    dexUrl: tok.pairAddr ? dexUrl(tok.chainId||'solana',tok.pairAddr) : null,
+    solscanUrl: solscanT(tok.mint),
     type:tok.type||'NEW',
-    entry SOL:BOT_BUY_ SOL, entryMc:tok.mc||1000,
+    entrySol:BOT_BUY_SOL, entryMc:tok.mc||1000,
     currentMc:tok.mc||1000, pnlUsd:0, pnlPct:0,
     status:'PENDING', ts:Date.now(), closedTs:null,
     vol:tok.vol||0, liq:tok.liq||0,
   };
 
   // Deduct balance immediately (trade is live)
-  botBal -= BOT_BUY_ SOL;
+  botBal -= BOT_BUY_SOL;
   totalTrades++;
   openPos[tok.mint] = trade;
   const wt = watchList.find(t=>t.mint===tok.mint); if(wt) wt.isHeld=true;
@@ -696,7 +700,7 @@ function botDecide(tok){
 
 function botTickPos(mint,newMc,sym){
   const t=openPos[mint]; if(!t||(t.status!=='OPEN'&&t.status!=='PENDING')) return;
-  t.currentMc=newMc; t.pnlPct=((newMc-t.entryMc)/t.entryMc)*100; t.pnlUsd=t.entry SOL* SOL_USD*(t.pnlPct/100);
+  t.currentMc=newMc; t.pnlPct=((newMc-t.entryMc)/t.entryMc)*100; t.pnlUsd=t.entrySol*SOL_USD*(t.pnlPct/100);
   if(t.status==='OPEN'){
     if(t.pnlPct>=TP_PCT*100) botClose(mint,'TP'); else if(t.pnlPct<=-SL_PCT*100) botClose(mint,'SL');
   }
@@ -705,7 +709,7 @@ function botTickPos(mint,newMc,sym){
 function botClose(mint,reason){
   const t=openPos[mint]; if(!t||(t.status!=='OPEN'&&t.status!=='PENDING')) return;
   t.status=reason; t.closedTs=Date.now();
-  botBal+=Math.max(0,t.entry SOL*(1+t.pnlPct/100));
+  botBal+=Math.max(0,t.entrySol*(1+t.pnlPct/100));
   realPnl+=t.pnlUsd; if(t.pnlUsd>=0) wins++; else losses++;
   delete openPos[mint];
   const wt=watchList.find(x=>x.mint===mint); if(wt) wt.isHeld=false;
@@ -725,7 +729,7 @@ setInterval(()=>{
     const drift=rand(-0.06,0.10)+bias;
     t.currentMc=Math.max(t.currentMc*(1+drift),100);
     t.pnlPct=((t.currentMc-t.entryMc)/t.entryMc)*100;
-    t.pnlUsd=t.entry SOL* SOL_USD*(t.pnlPct/100);
+    t.pnlUsd=t.entrySol*SOL_USD*(t.pnlPct/100);
     if(t.pnlPct>=TP_PCT*100) botClose(t.mint,'TP');
     else if(t.pnlPct<=-SL_PCT*100) botClose(t.mint,'SL');
   });
@@ -750,7 +754,7 @@ function pushBotFeed(trade,action){
       <span class="ft">${ts()}</span>
     </div>
     <div class="frow">
-      <span class="fl">stake</span><span class="fv-g">${fmt SOL(trade.entry SOL)}</span>
+      <span class="fl">stake</span><span class="fv-g">${fmtSol(trade.entrySol)}</span>
       <span class="fl">mc@entry</span><span class="fv-go">${fmt$(trade.entryMc)}</span>
       <span class="fl">vol</span><span class="fv">${fmt$(trade.vol||0)}</span>
       ${isClosed?`<span class="fl">pnl</span><span class="${trade.pnlUsd>=0?'fv-g':'fv-r'}">${pnlStr}</span>`:''}
@@ -811,8 +815,8 @@ function renderWatchList(){
     const tr=document.createElement('tr');
     tr.className=t.type==='MIGRATED'?'amg':'an';
     if(isHeld)   tr.classList.add('sel');
-    if(isPinned) tr.style.borderLeft='2px  SOLid var(--gold)';
-    const clickUrl = t.pairAddr ? dexUrl(t.chainId||' SOLana', t.pairAddr) : pumpUrl(t.mint);
+    if(isPinned) tr.style.borderLeft='2px solid var(--gold)';
+    const clickUrl = t.pairAddr ? dexUrl(t.chainId||'solana', t.pairAddr) : pumpUrl(t.mint);
     tr.onclick=e=>{ if(e.target.closest('.pin-btn')) return; window.open(clickUrl,'_blank'); };
     const caShort = t.mint ? t.mint.slice(0,8)+'…'+t.mint.slice(-4) : '—';
     tr.innerHTML=`
@@ -870,7 +874,7 @@ function renderBot(){
     const stCl=isOpen?'bst-open':t.status==='TP'?'bst-tp':t.status==='SL'?'bst-sl':'bst-time';
     const cl=colorFor(t.sym);
     const caShort=t.mint?t.mint.slice(0,10)+'…'+t.mint.slice(-6):'';
-    // Links: pump.fun (primary), dexscreener pair (secondary),  SOLscan (CA explorer)
+    // Links: pump.fun (primary), dexscreener pair (secondary), solscan (CA explorer)
     const primaryUrl = t.dexUrl || t.url || pumpUrl(t.mint);
     const row=document.createElement('div');
     row.className='brow';
@@ -884,11 +888,11 @@ function renderBot(){
         <div style="display:flex;gap:6px;margin-top:2px;font-size:9px">
           <a href="${pumpUrl(t.mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--lb);text-decoration:none">pump.fun</a>
           ${t.dexUrl?`<a href="${t.dexUrl}" target="_blank" onclick="event.stopPropagation()" style="color:var(--cyan);text-decoration:none">dexscr</a>`:''}
-          <a href="${ SOLscanT(t.mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--t3);text-decoration:none">${caShort}</a>
+          <a href="${solscanT(t.mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--t3);text-decoration:none">${caShort}</a>
         </div>
       </div>
       <div class="bdet" style="text-align:right">
-        ${fmt SOL(t.entry SOL)}<br>
+        ${fmtSol(t.entrySol)}<br>
         <span style="font-size:9px;color:var(--t3)">${fmt$(t.entryMc)}</span>
       </div>
       <div style="font-size:9px;color:var(--t2);display:flex;flex-direction:column;gap:1px;padding:0 6px;min-width:70px;text-align:right">
@@ -916,7 +920,7 @@ function updateStats(){
   const best=closed.reduce((m,t)=>t.pnlUsd>m?t.pnlUsd:m,-Infinity);
   const worst=closed.reduce((m,t)=>t.pnlUsd<m?t.pnlUsd:m,Infinity);
   const avgPnl=closed.length?closed.reduce((s,t)=>s+t.pnlUsd,0)/closed.length:0;
-  const roi=(realPnl/(BOT_BUDGET* SOL_USD))*100;
+  const roi=(realPnl/(BOT_BUDGET*SOL_USD))*100;
 
   const pe=document.getElementById('pnl-real');
   pe.textContent=(realPnl>=0?'+':'')+fmt$(realPnl); pe.className='pbig '+(realPnl>=0?'pos':'neg');
@@ -924,8 +928,8 @@ function updateStats(){
   document.getElementById('pnl-unreal').textContent=(unreal>=0?'+':'')+fmt$(unreal);
   document.getElementById('pnl-unreal').style.color=unreal>=0?'var(--yellow)':'var(--red)';
   document.getElementById('pnl-unreal-sub').textContent=openN+' posições abertas';
-  document.getElementById('pnl-bal').textContent=botBal.toFixed(3)+'  SOL';
-  document.getElementById('pnl-usd').textContent=fmt$(botBal* SOL_USD);
+  document.getElementById('pnl-bal').textContent=botBal.toFixed(3)+' ◎';
+  document.getElementById('pnl-usd').textContent=fmt$(botBal*SOL_USD);
   document.getElementById('s-tc').textContent=totalTrades;
   document.getElementById('s-wr').textContent=wr+'%';
   document.getElementById('s-best').textContent=best!=-Infinity?(best>=0?'+':'')+fmt$(best):'—';
@@ -965,9 +969,9 @@ window.addEventListener('resize',drawChart);
 //  FEED
 // ═══════════════════════════════════════════════════════
 function pushFeedItem(type,item){
-  const min SOL=parseFloat(document.getElementById('feed- SOL').value)||0;
+  const minSol=parseFloat(document.getElementById('feed-sol').value)||0;
   const minMc=parseFloat(document.getElementById('feed-mc').value)||0;
-  if((item. SOLAmt||0)<min SOL) return;
+  if((item.solAmt||0)<minSol) return;
   if((item.mcUsd||0)<minMc) return;
   const html=makeFI(item);
   queues[type].unshift(html); if(queues[type].length>150) queues[type].pop();
@@ -991,8 +995,8 @@ function makeFI({badge,bc,sc,isMg,sym,t,rows,mint,sig,pairUrl}){
   const mgCls=isMg?'fi-mg':'';
   const rowH=rows.map(r=>`<span class="fl">${r.l}</span><span class="${r.vc||'fv'}">${r.v}</span>`).join('');
   const clickUrl = pairUrl || pumpUrl(mint);
-  const addr=mint?`<a href="${pumpUrl(mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--lb)">pump.fun</a> · <a href="${ SOLscanT(mint)}" target="_blank" onclick="event.stopPropagation()">${mint.slice(0,14)}…${mint.slice(-6)}</a>`:'';
-  const txl=sig?` · <a href="${ SOLscanTx(sig)}" target="_blank" onclick="event.stopPropagation()">tx↗</a>`:'';
+  const addr=mint?`<a href="${pumpUrl(mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--lb)">pump.fun</a> · <a href="${solscanT(mint)}" target="_blank" onclick="event.stopPropagation()">${mint.slice(0,14)}…${mint.slice(-6)}</a>`:'';
+  const txl=sig?` · <a href="${solscanTx(sig)}" target="_blank" onclick="event.stopPropagation()">tx↗</a>`:'';
   const dexl=pairUrl?` · <a href="${pairUrl}" target="_blank" onclick="event.stopPropagation()">dex↗</a>`:'';
   return `<div class="fi ${mgCls}" onclick="window.open('${clickUrl}','_blank')">
     <div class="fi-top"><span class="fb ${bc}">${badge}</span><span class="fsym ${sc}">${sym}</span><span class="ft">${t}</span></div>
@@ -1047,7 +1051,7 @@ function lsSave(){
       id:t.id, sym:t.sym, name:t.name, mint:t.mint,
       url:t.url, pumpUrl:t.pumpUrl, dexUrl:t.dexUrl||null,
       type:t.type, side:'BUY',
-      entry SOL:t.entry SOL, entryMc:t.entryMc,
+      entrySol:t.entrySol, entryMc:t.entryMc,
       currentMc:t.currentMc, pnlUsd:t.pnlUsd, pnlPct:t.pnlPct,
       status:t.status, ts:t.ts, closedTs:t.closedTs||null,
       vol:t.vol||0, liq:t.liq||0,
@@ -1063,7 +1067,7 @@ function lsSave(){
     // Pinned watchlist tokens
     const pinned = watchList.filter(t=>t.isPinned).map(t=>t.mint);
     localStorage.setItem(LS.WATCHPIN, JSON.stringify(pinned));
-  } catch(e){ con SOLe.warn('[LS] Save failed (storage full?)', e); lsPrune(); }
+  } catch(e){ console.warn('[LS] Save failed (storage full?)', e); lsPrune(); }
 }
 
 // ── Load ──────────────────────────────────────────────
@@ -1079,7 +1083,7 @@ function lsLoad(){
       losses      = p.losses      ?? 0;
       totalTrades = p.totalTrades ?? 0;
       pnlHist     = p.pnlHist?.length ? p.pnlHist : [0];
-      con SOLe.log(`[LS] Restored PnL: ${fmt$(realPnl)} · ${totalTrades} trades · saved ${fmtAge(p.savedAt)} ago`);
+      console.log(`[LS] Restored PnL: ${fmt$(realPnl)} · ${totalTrades} trades · saved ${fmtAge(p.savedAt)} ago`);
     }
 
     // Load trades
@@ -1089,7 +1093,7 @@ function lsLoad(){
       botTrades = saved;
       // Restore open positions to openPos map
       saved.filter(t=>t.status==='OPEN').forEach(t=>{ openPos[t.mint]=t; });
-      con SOLe.log(`[LS] Restored ${saved.length} trades (${Object.keys(openPos).length} open)`);
+      console.log(`[LS] Restored ${saved.length} trades (${Object.keys(openPos).length} open)`);
     }
 
     // Load pinned tokens
@@ -1099,7 +1103,7 @@ function lsLoad(){
       // Will apply when watchlist loads
       window._pinnedMints = pinned;
     }
-  } catch(e){ con SOLe.warn('[LS] Load failed', e); }
+  } catch(e){ console.warn('[LS] Load failed', e); }
 }
 
 // ── Prune (free space if quota exceeded) ──────────────
@@ -1108,8 +1112,8 @@ function lsPrune(){
     // Keep only last 50 trades
     const raw = localStorage.getItem(LS.TRADES);
     if(raw){ const t=JSON.parse(raw); localStorage.setItem(LS.TRADES, JSON.stringify(t.slice(0,50))); }
-    con SOLe.warn('[LS] Pruned trades to 50 to free space');
-  } catch(e){ con SOLe.error('[LS] Prune failed', e); }
+    console.warn('[LS] Pruned trades to 50 to free space');
+  } catch(e){ console.error('[LS] Prune failed', e); }
 }
 
 // ── Clear all (reset button) ──────────────────────────
@@ -1119,7 +1123,7 @@ function lsClear(){
   realPnl=0; botBal=BOT_BUDGET; wins=0; losses=0; totalTrades=0;
   pnlHist=[0]; botTrades=[]; openPos={};
   updateStats(); renderBot(); drawChart();
-  con SOLe.log('[LS] Cleared all data');
+  console.log('[LS] Cleared all data');
   alert('✅ Histórico limpo. Recarregando…');
   location.reload();
 }
@@ -1150,7 +1154,7 @@ botClose = function(mint, reason){
 function exportTrades(){
   const data = {
     exportedAt: new Date().toISOString(),
-    summary: { realPnl, botBal, wins, losses, totalTrades, roi: ((realPnl/(BOT_BUDGET* SOL_USD))*100).toFixed(2)+'%' },
+    summary: { realPnl, botBal, wins, losses, totalTrades, roi: ((realPnl/(BOT_BUDGET*SOL_USD))*100).toFixed(2)+'%' },
     trades: botTrades,
     pnlHistory: pnlHist,
   };

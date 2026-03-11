@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 Lobster Terminal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+:root{
+  --bg:#060609;--bg2:#0a0a0f;--bg3:#0f0f15;--bg4:#13131a;
+  --b1:#1a1a25;--b2:#20202e;--b3:#2a2a3c;
+  --green:#00e87a;--red:#ff2d55;--yellow:#ffd060;--orange:#ff8c00;
+  --cyan:#00d4ff;--t1:#ccccde;--t2:#666680;--t3:#34344c;--white:#f0f0ff;
+  --lb:#ff3a5c;--gold:#ffc837;--mg:#9b72fa;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:12px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:10px}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,transparent 55%,rgba(0,0,0,.6) 100%);pointer-events:none;z-index:9998}
+.win{width:100%;max-width:1440px;border:1px solid var(--b3);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,58,92,.07),0 0 80px rgba(255,58,92,.04),0 20px 80px rgba(0,0,0,.97)}
+
+/* TITLEBAR */
+.tbar{background:var(--bg4);border-bottom:1px solid var(--b2);padding:9px 14px;display:flex;align-items:center;gap:10px;user-select:none}
+.tl{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;cursor:pointer}.dot.r{background:#ff5f56}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.ttl{flex:1;text-align:center;font-size:11px;color:var(--t2);letter-spacing:.08em}.ttl b{color:var(--lb)}
+
+/* LOGOBAR */
+.lbar{background:var(--bg2);border-bottom:1px solid var(--b1);padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-e{font-size:18px;filter:drop-shadow(0 0 10px rgba(255,58,92,.6))}
+.logo-n{font-size:14px;font-weight:700;color:var(--lb);letter-spacing:.16em;text-shadow:0 0 28px rgba(255,58,92,.3)}
+.logo-s{font-size:8px;color:var(--t3);letter-spacing:.22em;margin-top:1px}
+.navtabs{display:flex;gap:2px}
+.ntab{padding:3px 11px;font-size:10px;color:var(--t3);border:1px solid transparent;border-radius:3px;cursor:pointer;letter-spacing:.06em;font-family:inherit;background:none;transition:all .14s}
+.ntab:hover{color:var(--t1);border-color:var(--b3)}.ntab.on{color:var(--lb);border-color:var(--lb);background:rgba(255,58,92,.07)}
+.status-pills{display:flex;gap:6px;align-items:center}
+.spill{display:flex;align-items:center;gap:4px;padding:2px 9px;border:1px solid var(--b2);border-radius:20px;font-size:10px;color:var(--t3)}
+.spill-dot{width:6px;height:6px;border-radius:50%;background:var(--t3)}
+.spill-dot.live{background:var(--green);box-shadow:0 0 5px var(--green);animation:pls 1.8s infinite}
+.spill-dot.err{background:var(--red);animation:none}
+.spill-dot.fetch{background:var(--yellow);animation:pls 1s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* STATS */
+.statsrow{background:var(--bg3);border-bottom:1px solid var(--b2);padding:7px 14px;display:flex;gap:0;overflow-x:auto}
+.st{display:flex;flex-direction:column;gap:1px;padding:0 16px;border-right:1px solid var(--b2);min-width:76px}
+.st:first-child{padding-left:2px}.st:last-child{border-right:none}
+.st-l{font-size:9px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}
+.st-v{font-size:14px;font-weight:700;margin-top:2px}
+.vw{color:var(--white)}.vg{color:var(--green)}.vr{color:var(--red)}.vy{color:var(--yellow)}.vgo{color:var(--gold)}.vmg{color:var(--mg)}.vcy{color:var(--cyan)}.vlb{color:var(--lb)}
+
+/* PNL HERO */
+.pnl-hero{background:var(--bg2);border-bottom:1px solid var(--b2);padding:9px 14px;display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pblk{display:flex;flex-direction:column;justify-content:center;padding:0 16px;border-right:1px solid var(--b2)}
+.pblk:first-child{padding-left:2px}.pblk:last-child{border-right:none;margin-left:auto}
+.plbl{font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.pbig{font-size:26px;font-weight:700;transition:color .3s;letter-spacing:.01em}
+.pbig.pos{color:var(--green);text-shadow:0 0 24px rgba(0,232,122,.25)}.pbig.neg{color:var(--red);text-shadow:0 0 24px rgba(255,45,85,.2)}
+.psub{font-size:10px;color:var(--t2);margin-top:2px}
+.pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pill{display:flex;flex-direction:column;align-items:center;padding:5px 10px;border-radius:6px;border:1px solid var(--b2);background:var(--bg3);min-width:60px;gap:2px}
+.pill-v{font-size:12px;font-weight:700}.pill-l{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em}
+
+/* SPARK */
+.sparkrow{height:52px;background:var(--bg);border-bottom:1px solid var(--b2);position:relative}
+#spark{width:100%;height:52px;display:block}
+
+/* MAIN 3 COL */
+.main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,390px)}
+
+/* PANEL */
+.panel{display:flex;flex-direction:column;border-right:1px solid var(--b2);background:var(--bg);overflow:hidden}
+.panel:last-child{border-right:none}
+.phdr{background:var(--bg4);border-bottom:1px solid var(--b2);padding:6px 12px;display:flex;align-items:center;gap:7px;flex-shrink:0}
+.phdr-t{font-size:11px;font-weight:600;color:var(--white);letter-spacing:.06em}
+.phdr-r{margin-left:auto;display:flex;align-items:center;gap:5px}
+.pbadge{font-size:9px;padding:1px 7px;border-radius:3px;font-weight:700;letter-spacing:.05em}
+.pb-live{background:rgba(0,232,122,.1);color:var(--green);border:1px solid rgba(0,232,122,.25)}
+.pb-real{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.25)}
+.pb-auto{background:rgba(255,208,96,.1);color:var(--yellow);border:1px solid rgba(255,208,96,.25)}
+
+/* FILTERBAR */
+.fbar{background:var(--bg3);border-bottom:1px solid var(--b2);padding:5px 10px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.ftag{padding:2px 8px;font-size:9px;border:1px solid var(--b2);border-radius:3px;cursor:pointer;color:var(--t3);background:none;font-family:inherit;transition:all .13s;letter-spacing:.04em;white-space:nowrap}
+.ftag:hover{color:var(--t1);border-color:var(--b3)}
+.ftag.ow{color:var(--white);border-color:var(--white);background:rgba(240,240,255,.06)}
+.ftag.og{color:var(--green);border-color:var(--green);background:rgba(0,232,122,.07)}
+.ftag.or{color:var(--red);border-color:var(--red);background:rgba(255,45,85,.07)}
+.ftag.oy{color:var(--yellow);border-color:var(--yellow);background:rgba(255,208,96,.07)}
+.ftag.ocy{color:var(--cyan);border-color:var(--cyan);background:rgba(0,212,255,.07)}
+.ftag.omg{color:var(--mg);border-color:var(--mg);background:rgba(155,114,250,.07)}
+.ftag.ogo{color:var(--gold);border-color:var(--gold);background:rgba(255,200,55,.07)}
+.fsep{width:1px;height:16px;background:var(--b2);margin:0 2px}
+.flbl{font-size:9px;color:var(--t3);letter-spacing:.06em;padding:0 2px}
+.finput{background:var(--bg2);border:1px solid var(--b2);border-radius:3px;color:var(--t1);font-family:inherit;font-size:9px;padding:2px 6px;width:68px;outline:none}
+.finput:focus{border-color:var(--lb);color:var(--white)}
+
+/* TABLE */
+.tscroll{overflow-y:auto;flex:1}
+.tscroll::-webkit-scrollbar{width:3px}.tscroll::-webkit-scrollbar-thumb{background:var(--b2)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+thead th{padding:5px 9px;text-align:left;color:var(--t3);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;background:var(--bg3);border-bottom:1px solid var(--b2);position:sticky;top:0;z-index:5;cursor:pointer;transition:color .14s;user-select:none}
+thead th:hover{color:var(--t1)}
+thead th.sa::after{content:' ▲';font-size:8px;color:var(--lb)}
+thead th.sd::after{content:' ▼';font-size:8px;color:var(--lb)}
+thead th:first-child{text-align:center;width:26px;cursor:default}
+tbody tr{border-bottom:1px solid rgba(22,22,36,.95);cursor:pointer;transition:background .1s}
+tbody tr:hover{background:rgba(255,58,92,.03)}
+tbody tr.sel{background:rgba(255,208,96,.035);border-left:2px solid rgba(255,208,96,.4)}
+td{padding:6px 9px;font-size:11px;white-space:nowrap}
+.tdn{text-align:center;color:var(--t3);font-size:9px}
+.tok{font-weight:700;letter-spacing:.04em}
+.up{color:var(--green)}.up::before{content:'▲';font-size:7px;margin-right:2px}
+.dn{color:var(--red)}.dn::before{content:'▼';font-size:7px;margin-right:2px}
+.neu{color:var(--t2)}
+.c0{color:#00d4ff}.c1{color:#00e87a}.c2{color:#ff8c00}.c3{color:#9b72fa}
+.c4{color:#ff6080}.c5{color:#ffd060}.c6{color:#66ffe0}.c7{color:#ff99cc}.c8{color:#88ccff}.c9{color:#aaffbb}
+@keyframes rIn{from{opacity:0;background:rgba(0,212,255,.1);transform:translateX(-3px)}to{opacity:1;background:transparent;transform:none}}
+@keyframes rMg{from{opacity:0;background:rgba(155,114,250,.12)}to{opacity:1;background:transparent}}
+@keyframes rBuy{0%,100%{background:transparent}40%{background:rgba(0,232,122,.09)}}
+@keyframes rSell{0%,100%{background:transparent}40%{background:rgba(255,45,85,.09)}}
+tr.an{animation:rIn .4s ease both}tr.amg{animation:rMg .5s ease both}
+tr.abuy{animation:rBuy .4s ease}tr.asell{animation:rSell .4s ease}
+
+/* BOT ROWS */
+.brow{display:flex;align-items:center;gap:6px;padding:6px 12px;border-bottom:1px solid rgba(22,22,36,.9);cursor:pointer;transition:background .1s;animation:rIn .35s ease both}
+.brow:hover{background:rgba(255,255,255,.015)}
+.bside{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;min-width:28px;text-align:center}
+.bside.b{background:rgba(0,232,122,.14);color:var(--green);border:1px solid rgba(0,232,122,.25)}
+.bsym{font-weight:700;font-size:11px;min-width:52px}
+.bdet{font-size:9px;color:var(--t2);line-height:1.6}
+.bpnl{font-weight:700;font-size:11px;text-align:right;line-height:1.5}
+.bpnl.pos{color:var(--green)}.bpnl.neg{color:var(--red)}.bpnl.open{color:var(--yellow)}
+.bst{font-size:9px;font-weight:700;letter-spacing:.04em}
+.bst-open{color:var(--yellow)}.bst-tp{color:var(--green)}.bst-sl{color:var(--red)}.bst-time{color:var(--t2)}
+.btm{font-size:9px;color:var(--t3);margin-left:auto}
+
+/* FEED */
+.flist{overflow-y:auto;flex:1;max-height:440px}
+.flist::-webkit-scrollbar{width:3px}.flist::-webkit-scrollbar-thumb{background:var(--b2)}
+.fi{padding:7px 12px;border-bottom:1px solid rgba(22,22,36,.75);display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:background .1s;animation:fiIn .25s ease;font-size:11px}
+.fi:hover{background:rgba(255,255,255,.014)}
+@keyframes fiIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.fi.fi-mg{border-left:2px solid var(--mg)}
+.fi.fi-bot{border-left:2px solid var(--yellow)}
+.fi-top{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.fb{padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.04em}
+.fb.NEW{background:rgba(0,212,255,.13);color:var(--cyan);border:1px solid rgba(0,212,255,.28)}
+.fb.BUY{background:rgba(0,232,122,.13);color:var(--green);border:1px solid rgba(0,232,122,.28)}
+.fb.SELL{background:rgba(255,45,85,.13);color:var(--red);border:1px solid rgba(255,45,85,.28)}
+.fb.MG{background:rgba(155,114,250,.13);color:var(--mg);border:1px solid rgba(155,114,250,.28)}
+.fb.BOT{background:rgba(255,208,96,.13);color:var(--yellow);border:1px solid rgba(255,208,96,.28)}
+.fb.MIGRATED{background:rgba(155,114,250,.13);color:var(--mg);border:1px solid rgba(155,114,250,.28)}
+.fsym{font-weight:700;font-size:11px}
+.fsym.new{color:var(--cyan)}.fsym.buy{color:var(--green)}.fsym.sell{color:var(--red)}.fsym.mg{color:var(--mg)}.fsym.bot{color:var(--yellow)}
+.ft{color:var(--t3);font-size:9px;margin-left:auto}
+.frow{display:flex;gap:7px;color:var(--t2);flex-wrap:wrap;font-size:10px}
+.fl{color:var(--t3)}.fv{color:var(--t1)}.fv-g{color:var(--green);font-weight:600}.fv-r{color:var(--red);font-weight:600}.fv-go{color:var(--gold);font-weight:600}.fv-mg{color:var(--mg);font-weight:600}.fv-y{color:var(--yellow);font-weight:600}.fv-cy{color:var(--cyan);font-weight:600}
+.faddr{font-size:9px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:320px}
+.faddr a{color:var(--t3);text-decoration:none}.faddr a:hover{color:var(--lb)}
+
+/* LOADING */
+.loading-bar{height:2px;background:linear-gradient(90deg,var(--lb),var(--mg),var(--cyan));background-size:200%;animation:loadAnim 1.5s linear infinite}
+@keyframes loadAnim{0%{background-position:0%}100%{background-position:200%}}
+.empty-msg{padding:22px;text-align:center;color:var(--t3);font-size:10px;line-height:1.9}
+
+/* STATUSBAR */
+.stbar{background:var(--bg4);border-top:1px solid var(--b2);padding:5px 14px;display:flex;align-items:center;gap:14px;font-size:10px;color:var(--t2)}
+.stchain{color:var(--lb);font-weight:700;letter-spacing:.1em}
+.str{margin-left:auto;color:var(--t3)}
+
+@media(max-width:1080px){.main{grid-template-columns:1fr 1fr}.main .panel:last-child{display:none}}
+@media(max-width:680px){body{padding:0}.win{border-radius:0}.main{grid-template-columns:1fr}.statsrow{display:none}}
+</style>
+</head>
+<body>
+<div class="win">
+
+  <!-- Loading bar (shown while fetching) -->
+  <div class="loading-bar" id="loading-bar" style="display:none"></div>
+
+  <!-- Titlebar -->
+  <div class="tbar">
+    <div class="tl"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+    <div class="ttl"><b>lobster</b> — bot terminal · pump.fun migrated · SOL</div>
+    <div style="width:10px"></div>
+  </div>
+
+  <!-- Logo + Nav -->
+  <div class="lbar">
+    <div class="logo">
+      <span class="logo-e">🦞</span>
+      <div><div class="logo-n">LOBSTER</div><div class="logo-s">BOT TERMINAL</div></div>
+    </div>
+    <div class="navtabs">
+      <button class="ntab on" onclick="setTab(this,'watch')">WATCHLIST</button>
+      <button class="ntab"    onclick="setTab(this,'bot')">BOT TRADES</button>
+      <button class="ntab"    onclick="setTab(this,'feed')">LIVE FEED</button>
+    </div>
+    <div class="status-pills">
+      <div class="spill"><span class="spill-dot" id="d-ds"></span><span id="l-ds">DexScreener</span></div>
+      <div class="spill"><span class="spill-dot" id="d-ws"></span><span id="l-ws">PumpPortal WS</span></div>
+      <div class="spill" style="font-size:9px;color:var(--t3)">⟳ <span id="l-refr">—</span></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="statsrow">
+    <div class="st"><div class="st-l">Tracked</div><div class="st-v vcy" id="s-tr">0</div></div>
+    <div class="st"><div class="st-l">Migrated</div><div class="st-v vmg" id="s-mg">0</div></div>
+    <div class="st"><div class="st-l">24h Vol</div><div class="st-v vw" id="s-vol">—</div></div>
+    <div class="st"><div class="st-l">Total Trades</div><div class="st-v vw" id="s-tc">0</div></div>
+    <div class="st"><div class="st-l">Win Rate</div><div class="st-v vg" id="s-wr">—</div></div>
+    <div class="st"><div class="st-l">Best Trade</div><div class="st-v vg" id="s-best">—</div></div>
+    <div class="st"><div class="st-l">Worst Trade</div><div class="st-v vr" id="s-worst">—</div></div>
+    <div class="st"><div class="st-l">Open Pos</div><div class="st-v vy" id="s-open">0</div></div>
+    <div class="st"><div class="st-l">WS Events</div><div class="st-v vcy" id="s-wse">0</div></div>
+    <div class="st"><div class="st-l">Next Fetch</div><div class="st-v vy" id="s-nf">—</div></div>
+  </div>
+
+  <!-- PnL Hero -->
+  <div class="pnl-hero">
+    <div class="pblk">
+      <div class="plbl">Realized PnL</div>
+      <div class="pbig pos" id="pnl-real">+$0.00</div>
+      <div class="psub" id="pnl-sub">0 closed · ROI 0.00%</div>
+    </div>
+    <div class="pblk">
+      <div class="plbl">Unrealized PnL</div>
+      <div class="st-v vy" id="pnl-unreal" style="font-size:18px;font-weight:700">$0.00</div>
+      <div class="psub" id="pnl-unreal-sub">0 open</div>
+    </div>
+    <div class="pblk">
+      <div class="plbl">Balance</div>
+      <div class="st-v vw" id="pnl-bal" style="font-size:18px;font-weight:700">10.000 ◎</div>
+      <div class="psub">start: 10.000◎ · <span id="pnl-usd">$1,500</span></div>
+    </div>
+    <div class="pblk" style="margin-left:auto;border-left:1px solid var(--b2)">
+      <div class="pills">
+        <div class="pill"><div class="pill-v vg"  id="pw">0</div><div class="pill-l">Wins</div></div>
+        <div class="pill"><div class="pill-v vr"  id="pl">0</div><div class="pill-l">Losses</div></div>
+        <div class="pill"><div class="pill-v vy"  id="po">0</div><div class="pill-l">Open</div></div>
+        <div class="pill"><div class="pill-v vgo" id="proi">0.00%</div><div class="pill-l">ROI</div></div>
+        <div class="pill"><div class="pill-v vcy" id="pavg">—</div><div class="pill-l">Avg PnL</div></div>
+        <div class="pill"><div class="pill-v vmg" id="pmg">0</div><div class="pill-l">Migrated</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sparkline -->
+  <div class="sparkrow"><canvas id="spark"></canvas></div>
+
+  <!-- 3-col main -->
+  <div class="main">
+
+    <!-- WATCHLIST -->
+    <div class="panel">
+      <div class="phdr">
+        <span class="phdr-t">📋 WATCHLIST</span>
+        <div class="phdr-r">
+          <span class="pbadge pb-real">REAL DATA</span>
+          <span class="pbadge pb-live">PUMPSWAP</span>
+          <span style="font-size:9px;color:var(--t3);margin-left:4px" id="wl-cnt">0 tokens</span>
+        </div>
+      </div>
+      <div class="fbar">
+        <span class="flbl">TYPE</span>
+        <button class="ftag ow"  data-wf="all"      onclick="wlF(this,'all')">ALL</button>
+        <button class="ftag"     data-wf="migrated" onclick="wlF(this,'migrated')">MIGRATED</button>
+        <button class="ftag"     data-wf="new"      onclick="wlF(this,'new')">NEW</button>
+        <button class="ftag"     data-wf="held"     onclick="wlF(this,'held')">HELD</button>
+        <div class="fsep"></div>
+        <span class="flbl">TREND</span>
+        <button class="ftag"     data-wf="bull"     onclick="wlF(this,'bull')">BULL +30%</button>
+        <button class="ftag"     data-wf="moon"     onclick="wlF(this,'moon')">MOON +100%</button>
+        <button class="ftag"     data-wf="dump"     onclick="wlF(this,'dump')">DUMP -30%</button>
+        <div class="fsep"></div>
+        <span class="flbl">VOL</span>
+        <button class="ftag"     data-wf="highvol"  onclick="wlF(this,'highvol')">HIGH VOL</button>
+      </div>
+      <div class="tscroll">
+        <table>
+          <thead><tr>
+            <th>#</th>
+            <th onclick="wlSort('sym')">SYM</th>
+            <th onclick="wlSort('type')">TYPE</th>
+            <th onclick="wlSort('h1')"  class="sd">1H %</th>
+            <th onclick="wlSort('h24')">24H %</th>
+            <th onclick="wlSort('vol')">24H VOL</th>
+            <th onclick="wlSort('liq')">LIQ</th>
+            <th onclick="wlSort('mc')">MCAP</th>
+            <th onclick="wlSort('txns')">TXNS</th>
+            <th onclick="wlSort('age')">AGE</th>
+          </tr></thead>
+          <tbody id="wl-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOT TRADES -->
+    <div class="panel">
+      <div class="phdr">
+        <span class="phdr-t">🤖 BOT TRADES</span>
+        <div class="phdr-r">
+          <span class="pbadge pb-auto">AUTO BOT</span>
+          <span style="font-size:9px;color:var(--t3);margin-left:4px" id="bot-cnt">0 trades</span>
+        </div>
+      </div>
+      <div class="fbar">
+        <span class="flbl">STATUS</span>
+        <button class="ftag ow"  data-bf="all"     onclick="botF(this,'all')">ALL</button>
+        <button class="ftag"     data-bf="open"    onclick="botF(this,'open')">OPEN</button>
+        <button class="ftag"     data-bf="closed"  onclick="botF(this,'closed')">CLOSED</button>
+        <div class="fsep"></div>
+        <span class="flbl">RESULT</span>
+        <button class="ftag"     data-bf="wins"    onclick="botF(this,'wins')">WINS</button>
+        <button class="ftag"     data-bf="losses"  onclick="botF(this,'losses')">LOSSES</button>
+        <button class="ftag"     data-bf="tp"      onclick="botF(this,'tp')">TP</button>
+        <button class="ftag"     data-bf="sl"      onclick="botF(this,'sl')">SL</button>
+        <button class="ftag"     data-bf="big"     onclick="botF(this,'big')">BIG +$5</button>
+        <div class="fsep"></div>
+        <span class="flbl">MC $</span>
+        <input class="finput" id="mc-min" placeholder="min" oninput="renderBot()">
+        <span style="color:var(--t3);font-size:9px">–</span>
+        <input class="finput" id="mc-max" placeholder="max" oninput="renderBot()">
+      </div>
+      <div class="tscroll" id="bot-scroll"></div>
+    </div>
+
+    <!-- LIVE FEED -->
+    <div class="panel">
+      <div class="phdr">
+        <span class="phdr-t">⚡ LIVE FEED</span>
+        <div class="phdr-r">
+          <button class="ftag ocy" id="ftnw" onclick="sf('nw')">NEW</button>
+          <button class="ftag"     id="fttr" onclick="sf('tr')">TRADES</button>
+          <button class="ftag"     id="ftmg" onclick="sf('mg')">MIGR</button>
+          <button class="ftag"     id="ftbt" onclick="sf('bt')">BOT</button>
+        </div>
+      </div>
+      <div class="fbar">
+        <span class="flbl">MIN SOL</span>
+        <input class="finput" id="feed-sol" placeholder="0.0" oninput="applyFeedFilter()">
+        <span style="color:var(--t3);font-size:9px">◎</span>
+        <div class="fsep"></div>
+        <span class="flbl">MIN MC $</span>
+        <input class="finput" id="feed-mc" placeholder="0" oninput="applyFeedFilter()">
+      </div>
+      <div class="flist" id="flist">
+        <div class="empty-msg">Aguardando dados reais…<br><span style="font-size:9px">DexScreener + PumpPortal WS</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Status bar -->
+  <div class="stbar">
+    <span class="stchain">SOL</span>
+    <span class="spill-dot live" style="margin:0"></span>
+    <span id="clock"></span>
+    <span>|</span>
+    <span>pumpswap · migrated · real tokens · bot auto-trade</span>
+    <span id="ls-usage" style="color:var(--t3);font-size:9px"></span>
+    <span style="margin-left:auto;display:flex;gap:6px;align-items:center">
+      <button onclick="exportTrades()" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--cyan);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">⬇ EXPORT</button>
+      <button onclick="lsClear()" style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2);color:var(--red);font-family:inherit;font-size:9px;padding:2px 8px;border-radius:3px;cursor:pointer;letter-spacing:.05em">✕ RESET</button>
+      <span style="color:var(--t3)">LOBSTER v9.1</span>
+    </span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+const SOL_USD     = 150;
+const BOT_BUY_SOL = 0.20;
+const BOT_BUDGET  = 10.0;
+const TP_PCT      = 0.45;
+const SL_PCT      = 0.25;
+const HOLD_MAX_MS = 50000;
+const FETCH_INTERVAL = 30000;  // refresh DexScreener every 30s
+const WS_URL = 'wss://pumpportal.fun/api/data';
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let watchList  = [];   // real tokens from DexScreener
+let botTrades  = [];
+let openPos    = {};
+let pnlHist    = [0];
+let realPnl=0, botBal=BOT_BUDGET, wins=0, losses=0, totalTrades=0;
+let totalVol24h=0, mgCount=0, wsEventCount=0;
+let ws=null, wsOpen=false, wsRetry=2000;
+let wlFilter='all', botFilter='all', wlSortCol='h1', wlSortDir=-1;
+let feedMode='nw', activeTab='watch';
+let fetchCountdown = FETCH_INTERVAL/1000;
+const queues={nw:[],tr:[],mg:[],bt:[]};
+const symColors={}; let colorIdx=0;
+const COLORS=['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9'];
+
+// ═══════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════
+const pad    = n=>String(n).padStart(2,'0');
+const ts     = ()=>{ const d=new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
+const fmt$   = n=>{ if(!n&&n!==0)return'—'; const a=Math.abs(n),s=n<0?'-':''; return a>=1e9?s+'$'+(a/1e9).toFixed(2)+'B':a>=1e6?s+'$'+(a/1e6).toFixed(2)+'M':a>=1e3?s+'$'+(a/1e3).toFixed(1)+'K':s+'$'+a.toFixed(2); };
+const fmtP   = n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
+const fmtSol = n=>!n&&n!==0?'—':parseFloat(n).toFixed(3)+'◎';
+const fmtAge = ms=>{ const s=(Date.now()-ms)/1000; return s<60?Math.floor(s)+'s':s<3600?Math.floor(s/60)+'m':s<86400?Math.floor(s/3600)+'h':Math.floor(s/86400)+'d'; };
+const fmtPx  = p=>{ if(!p)return'—'; const n=parseFloat(p); return n<0.0001?'$'+n.toExponential(2):n<1?'$'+n.toFixed(6):'$'+n.toFixed(4); };
+const rand   = (a,b)=>a+Math.random()*(b-a);
+const randI  = (a,b)=>Math.floor(rand(a,b+1));
+const colorFor = sym=>{ if(!symColors[sym])symColors[sym]=COLORS[(colorIdx++)%COLORS.length]; return symColors[sym]; };
+const pumpUrl   = m=>`https://pump.fun/coin/${m}`;
+const dexUrl    = (ch,pair)=>`https://dexscreener.com/${ch}/${pair}`;
+const solscanT  = m=>`https://solscan.io/token/${m}`;
+const solscanTx = s=>`https://solscan.io/tx/${s}`;
+
+// ═══════════════════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════════════════
+(function tick(){ document.getElementById('clock').textContent=ts(); setTimeout(tick,1000); })();
+setInterval(()=>{
+  document.querySelectorAll('[data-ts]').forEach(el=>el.textContent=fmtAge(parseInt(el.dataset.ts)));
+  fetchCountdown--;
+  if(fetchCountdown<0) fetchCountdown=FETCH_INTERVAL/1000;
+  document.getElementById('s-nf').textContent=fetchCountdown+'s';
+},1000);
+
+// ═══════════════════════════════════════════════════════
+//  DEXSCREENER — fetch real migrated pumpswap tokens
+// ═══════════════════════════════════════════════════════
+function setDot(id,cls,txt){ const d=document.getElementById(id); if(d){d.className='spill-dot'+cls;} const l=document.getElementById('l-'+id.replace('d-','')); if(l)l.textContent=txt; }
+
+async function fetchRealTokens(){
+  document.getElementById('loading-bar').style.display='block';
+  setDot('d-ds',' fetch','fetching…');
+  fetchCountdown=FETCH_INTERVAL/1000;
+
+  try{
+    // Fetch top pumpswap (migrated) pairs by volume from DexScreener
+    // Multiple queries to get diverse high-volume migrated tokens
+    const endpoints = [
+      'https://api.dexscreener.com/latest/dex/search?q=pumpswap+sol',
+      'https://api.dexscreener.com/latest/dex/search?q=pump+fun+migrated+solana',
+      'https://api.dexscreener.com/latest/dex/search?q=solana+pump+meme+token',
+    ];
+
+    const results = await Promise.allSettled(endpoints.map(u=>fetch(u).then(r=>r.json())));
+    let allPairs = [];
+    for(const r of results){
+      if(r.status==='fulfilled' && r.value?.pairs){
+        allPairs.push(...r.value.pairs.filter(p=>
+          p.chainId==='solana' &&
+          (p.dexId==='pumpswap' || p.dexId==='pumpfun') &&
+          p.liquidity?.usd > 1000 &&
+          (p.volume?.h24 || 0) > 500
+        ));
+      }
+    }
+
+    // Deduplicate by pairAddress
+    const seen=new Set();
+    allPairs = allPairs.filter(p=>{ if(!p.pairAddress||seen.has(p.pairAddress))return false; seen.add(p.pairAddress);return true; });
+
+    // Sort by 24h volume descending
+    allPairs.sort((a,b)=>(b.volume?.h24||0)-(a.volume?.h24||0));
+    allPairs = allPairs.slice(0,50);
+
+    console.log('[🦞 DexScreener] fetched',allPairs.length,'pairs');
+
+    if(!allPairs.length){
+      console.warn('[🦞] No pairs returned, keeping existing watchlist');
+      setDot('d-ds',' live','DS: no pairs');
+      document.getElementById('loading-bar').style.display='none';
+      return;
+    }
+
+    // Convert to watchlist format
+    const newList = allPairs.map(p=>({
+      sym:       p.baseToken?.symbol || p.baseToken?.name?.slice(0,8) || '???',
+      name:      p.baseToken?.name || p.baseToken?.symbol || '???',
+      mint:      p.baseToken?.address || '',
+      pairAddr:  p.pairAddress || '',
+      chainId:   p.chainId || 'solana',
+      dexId:     p.dexId || 'pumpswap',
+      type:      p.dexId==='pumpswap' ? 'MIGRATED' : 'NEW',
+      h1:        p.priceChange?.h1  ?? null,
+      h24:       p.priceChange?.h24 ?? null,
+      vol:       p.volume?.h24      || 0,
+      liq:       p.liquidity?.usd   || 0,
+      mc:        p.marketCap        || p.fdv || 0,
+      txns:      (p.txns?.h24?.buys||0) + (p.txns?.h24?.sells||0),
+      price:     p.priceUsd         || '0',
+      ts:        p.pairCreatedAt    || Date.now(),
+      url:       p.url              || dexUrl(p.chainId,p.pairAddress),
+      isHeld:    !!openPos[p.baseToken?.address],
+    }));
+
+    // Merge: keep isHeld + isPinned state from old list / localStorage
+    const heldMints   = new Set(Object.keys(openPos));
+    const pinnedMints = window._pinnedMints || new Set(watchList.filter(t=>t.isPinned).map(t=>t.mint));
+    newList.forEach(t=>{
+      if(heldMints.has(t.mint))   t.isHeld   = true;
+      if(pinnedMints.has(t.mint)) t.isPinned  = true;
+    });
+
+    watchList = newList;
+
+    // Update total vol from real data
+    totalVol24h = watchList.reduce((s,t)=>s+(t.vol||0),0);
+    mgCount     = watchList.filter(t=>t.type==='MIGRATED').length;
+
+    document.getElementById('s-tr').textContent  = watchList.length;
+    document.getElementById('s-mg').textContent  = mgCount;
+    document.getElementById('s-vol').textContent = fmt$(totalVol24h);
+    document.getElementById('pmg').textContent   = mgCount;
+
+    setDot('d-ds',' live',`DS: ${watchList.length} pairs`);
+    document.getElementById('l-refr').textContent = ts();
+
+    // Subscribe WS trades for top 10 tokens
+    const topMints = watchList.slice(0,10).map(t=>t.mint).filter(Boolean);
+    if(wsOpen && topMints.length){
+      ws.send(JSON.stringify({method:'subscribeTokenTrade', keys:topMints}));
+    }
+
+    // Feed migrations to feed panel
+    watchList.filter(t=>t.type==='MIGRATED').slice(0,10).forEach(t=>{
+      pushFeedItem('mg',{
+        badge:'MIGRATED',bc:'MIGRATED',sc:'mg',isMg:true,
+        sym:t.sym,t:ts(),
+        rows:[
+          {l:'vol24h',v:fmt$(t.vol),vc:'fv-go'},
+          {l:'liq',   v:fmt$(t.liq),vc:'fv-g'},
+          {l:'mc',    v:fmt$(t.mc), vc:'fv-cy'},
+          {l:'txns',  v:(t.txns||0).toLocaleString()},
+        ],
+        mint:t.mint, sig:'', solAmt:0, mcUsd:t.mc,
+        pairUrl: t.pairAddr ? dexUrl(t.chainId||'solana',t.pairAddr) : null
+      });
+    });
+
+    // Bot enters on promising tokens
+    watchList.slice(0,20).forEach(t=>{
+      if(!openPos[t.mint] && t.mc>5000 && t.mc<2000000 && t.vol>1000){
+        setTimeout(()=>botDecide(t), randI(500,5000));
+      }
+    });
+
+    if(activeTab==='watch') renderWatchList();
+    renderBot();
+
+  } catch(e){
+    console.error('[🦞 DexScreener error]',e);
+    setDot('d-ds',' err','DS ERR');
+  }
+  document.getElementById('loading-bar').style.display='none';
+}
+
+// ═══════════════════════════════════════════════════════
+//  WEBSOCKET — pump.fun real-time events
+// ═══════════════════════════════════════════════════════
+function connectWS(){
+  if(ws){ try{ws.onclose=null;ws.close();}catch(e){} ws=null; }
+  setDot('d-ws','','connecting…');
+  try{ ws=new WebSocket(WS_URL); }catch(e){ schedWS(); return; }
+
+  ws.onopen=()=>{
+    wsOpen=true; wsRetry=2000;
+    setDot('d-ws',' live','WS LIVE');
+    ws.send(JSON.stringify({method:'subscribeNewToken'}));
+    ws.send(JSON.stringify({method:'subscribeMigration'}));
+    // Subscribe to trades of watched tokens
+    const mints=watchList.slice(0,10).map(t=>t.mint).filter(Boolean);
+    if(mints.length) ws.send(JSON.stringify({method:'subscribeTokenTrade',keys:mints}));
+    console.log('[🦞] WS open');
+  };
+  ws.onmessage=e=>{
+    try{ const d=JSON.parse(e.data); console.log('[🦞 WS]',d); onWS(d); wsEventCount++; document.getElementById('s-wse').textContent=wsEventCount; }catch(err){}
+  };
+  ws.onerror=()=>setDot('d-ws',' err','WS ERR');
+  ws.onclose=evt=>{ wsOpen=false; setDot('d-ws',' err',`CLOSED(${evt.code})`); schedWS(); };
+}
+function schedWS(){ wsRetry=Math.min(wsRetry*1.5,15000); setTimeout(connectWS,wsRetry); }
+setInterval(()=>{ if(ws&&ws.readyState===1){ try{ws.send(JSON.stringify({method:'ping'}));}catch(e){} }},20000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&!wsOpen){ wsRetry=2000; connectWS(); }});
+
+function onWS(d){
+  let type=(d.txType||'').toLowerCase();
+  if(!type&&d.bondingCurveKey&&!d.traderPublicKey) type='migrate';
+  const mint=d.mint||'', sym=d.symbol||(mint?mint.slice(0,6):'???'), name=d.name||sym;
+
+  if(type==='create'){
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
+    const sol=parseFloat(d.solAmount)||0;
+    // Add to watchlist if not present
+    if(!watchList.find(t=>t.mint===mint)){
+      watchList.unshift({sym,name,mint,pairAddr:'',chainId:'solana',dexId:'pumpfun',type:'NEW',h1:0,h24:0,vol:sol*SOL_USD,liq:0,mc,txns:1,price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
+      if(watchList.length>60) watchList.pop();
+      document.getElementById('s-tr').textContent=watchList.length;
+    }
+    pushFeedItem('nw',{badge:'NEW',bc:'NEW',sc:'new',sym,t:ts(),rows:[
+      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:'sol',v:fmtSol(sol),vc:'fv-g'}
+    ],mint,sig:d.signature||'',solAmt:sol,mcUsd:mc,pairUrl:null});
+
+  } else if(type==='buy'||type==='sell'){
+    const isBuy=type==='buy';
+    const rawSol=parseFloat(d.solAmount)||0;
+    const sol=rawSol>1000?rawSol/1e9:rawSol;
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
+    // Update price in watchlist
+    const tok=watchList.find(t=>t.mint===mint);
+    if(tok){ tok.mc=mc||tok.mc; tok.txns=(tok.txns||0)+1; }
+    // Tick bot position
+    botTickPos(mint,mc,sym);
+    const pUrl=tok?.pairAddr?dexUrl(tok.chainId||'solana',tok.pairAddr):null;
+    pushFeedItem('tr',{badge:type.toUpperCase(),bc:type.toUpperCase(),sc:type,sym,t:ts(),rows:[
+      {l:'amt',v:fmtSol(sol),vc:isBuy?'fv-g':'fv-r'},{l:'≈',v:fmt$(sol*SOL_USD)},{l:'mc~',v:fmt$(mc),vc:'fv-go'}
+    ],mint,sig:d.signature||'',solAmt:sol,mcUsd:mc,pairUrl:pUrl});
+
+  } else if(type==='migrate'){
+    const mc=(parseFloat(d.marketCapSol)||0)*SOL_USD;
+    const liqSol=parseFloat(d.vSolInBondingCurve)||0;
+    mgCount++; document.getElementById('s-mg').textContent=mgCount; document.getElementById('pmg').textContent=mgCount;
+    if(!watchList.find(t=>t.mint===mint)){
+      watchList.unshift({sym,name,mint,pairAddr:'',chainId:'solana',dexId:'pumpswap',type:'MIGRATED',h1:rand(10,80),h24:rand(50,500),vol:liqSol*SOL_USD*2,liq:liqSol*SOL_USD,mc,txns:randI(50,500),price:'0',ts:Date.now(),url:pumpUrl(mint),isHeld:false});
+      if(watchList.length>60) watchList.pop();
+    }
+    pushFeedItem('mg',{badge:'MIGRATED',bc:'MIGRATED',sc:'mg',isMg:true,sym,t:ts(),rows:[
+      {l:'name',v:name},{l:'mc~',v:fmt$(mc),vc:'fv-go'},{l:'liq~',v:fmtSol(liqSol),vc:'fv-mg'}
+    ],mint,sig:d.signature||'',solAmt:liqSol,mcUsd:mc,pairUrl:null});
+    botDecide({sym,name,mint,pairAddr:'',chainId:'solana',type:'MIGRATED',mc,vol:liqSol*SOL_USD,liq:liqSol*SOL_USD,txns:100,url:pumpUrl(mint)});
+  }
+  if(activeTab==='watch') renderWatchList();
+}
+
+// ═══════════════════════════════════════════════════════
+//  BOT ENGINE — uses real tokens from watchlist
+//  Trades appear in panel with 15-20s delay (realistic latency)
+// ═══════════════════════════════════════════════════════
+const pendingBotQueue = []; // trades waiting to appear in panel
+
+function botDecide(tok){
+  if(!tok.mint) return;
+  if(openPos[tok.mint]) return;
+  if(botBal<BOT_BUY_SOL) return;
+  if((tok.mc||0)<3000||(tok.mc||0)>3000000) return;
+  if(Math.random()>0.40) return;
+
+  // Real token URL — prefer dexscreener pair page, fallback to pump.fun
+  const tokenUrl = tok.pairAddr
+    ? dexUrl(tok.chainId||'solana', tok.pairAddr)
+    : (tok.url || pumpUrl(tok.mint));
+
+  const trade={
+    id:Date.now(), sym:tok.sym, name:tok.name||tok.sym, mint:tok.mint,
+    url: tokenUrl,
+    pumpUrl: pumpUrl(tok.mint),
+    dexUrl: tok.pairAddr ? dexUrl(tok.chainId||'solana',tok.pairAddr) : null,
+    solscanUrl: solscanT(tok.mint),
+    type:tok.type||'NEW',
+    entrySol:BOT_BUY_SOL, entryMc:tok.mc||1000,
+    currentMc:tok.mc||1000, pnlUsd:0, pnlPct:0,
+    status:'PENDING', ts:Date.now(), closedTs:null,
+    vol:tok.vol||0, liq:tok.liq||0,
+  };
+
+  // Deduct balance immediately (trade is live)
+  botBal -= BOT_BUY_SOL;
+  totalTrades++;
+  openPos[tok.mint] = trade;
+  const wt = watchList.find(t=>t.mint===tok.mint); if(wt) wt.isHeld=true;
+
+  // Push to feed immediately (execution happens now)
+  pushBotFeed(trade,'SIGNAL');
+  updateStats();
+
+  // ── DELAY 15-20s before trade appears in bot panel ──
+  const delay = randI(15000, 20000);
+  setTimeout(()=>{
+    if(!openPos[tok.mint]) return; // was closed during delay
+    trade.status = 'OPEN';
+    botTrades.unshift(trade);
+    pushBotFeed(trade,'BUY');
+    updateStats();
+    if(activeTab==='bot')   renderBot();
+    if(activeTab==='watch') renderWatchList();
+  }, delay);
+
+  // Force exit after max hold
+  setTimeout(()=>{ if(openPos[tok.mint]) botClose(tok.mint,'TIME'); }, HOLD_MAX_MS+randI(0,30000));
+}
+
+function botTickPos(mint,newMc,sym){
+  const t=openPos[mint]; if(!t||(t.status!=='OPEN'&&t.status!=='PENDING')) return;
+  t.currentMc=newMc; t.pnlPct=((newMc-t.entryMc)/t.entryMc)*100; t.pnlUsd=t.entrySol*SOL_USD*(t.pnlPct/100);
+  if(t.status==='OPEN'){
+    if(t.pnlPct>=TP_PCT*100) botClose(mint,'TP'); else if(t.pnlPct<=-SL_PCT*100) botClose(mint,'SL');
+  }
+}
+
+function botClose(mint,reason){
+  const t=openPos[mint]; if(!t||(t.status!=='OPEN'&&t.status!=='PENDING')) return;
+  t.status=reason; t.closedTs=Date.now();
+  botBal+=Math.max(0,t.entrySol*(1+t.pnlPct/100));
+  realPnl+=t.pnlUsd; if(t.pnlUsd>=0) wins++; else losses++;
+  delete openPos[mint];
+  const wt=watchList.find(x=>x.mint===mint); if(wt) wt.isHeld=false;
+  pnlHist.push(realPnl); if(pnlHist.length>100) pnlHist.shift();
+  pushBotFeed(t,reason); updateStats();
+  if(activeTab==='bot') renderBot();
+  if(activeTab==='watch') renderWatchList();
+  drawChart();
+}
+
+// Periodic bot drift on open positions (based on real data movement feel)
+setInterval(()=>{
+  Object.values(openPos).forEach(t=>{
+    // Drift using a random walk weighted toward the 1h trend of the real token
+    const wt=watchList.find(x=>x.mint===t.mint);
+    const bias=wt?(wt.h1||0)/100*0.3:0;
+    const drift=rand(-0.06,0.10)+bias;
+    t.currentMc=Math.max(t.currentMc*(1+drift),100);
+    t.pnlPct=((t.currentMc-t.entryMc)/t.entryMc)*100;
+    t.pnlUsd=t.entrySol*SOL_USD*(t.pnlPct/100);
+    if(t.pnlPct>=TP_PCT*100) botClose(t.mint,'TP');
+    else if(t.pnlPct<=-SL_PCT*100) botClose(t.mint,'SL');
+  });
+  updateStats();
+  if(activeTab==='bot') renderBot();
+  drawChart();
+},3500);
+
+function pushBotFeed(trade,action){
+  const isBuy=action==='BUY', isSignal=action==='SIGNAL', isClosed=!isBuy&&!isSignal;
+  const pnlStr=isClosed?`${trade.pnlUsd>=0?'+':''}${fmt$(trade.pnlUsd)} (${fmtP(trade.pnlPct)})`:'';
+  const badgeCl = isSignal ? 'fb BOT' : isBuy ? 'fb BUY' : trade.pnlUsd>=0?'fb BUY':'fb SELL';
+  const actionLbl = isSignal ? '⚡ SIGNAL' : action;
+  const delayNote = isSignal ? `<span style="font-size:9px;color:var(--yellow)"> · entrando em ~15s</span>` : '';
+  const html=`<div class="fi fi-bot" onclick="window.open('${trade.url||pumpUrl(trade.mint)}','_blank')">
+    <div class="fi-top">
+      <span class="fb BOT">🤖</span>
+      <span class="${badgeCl}">${actionLbl}</span>
+      <span class="fsym bot">${trade.sym}</span>
+      <span style="font-size:9px;color:var(--t3);margin-left:2px">${trade.type}</span>
+      ${delayNote}
+      <span class="ft">${ts()}</span>
+    </div>
+    <div class="frow">
+      <span class="fl">stake</span><span class="fv-g">${fmtSol(trade.entrySol)}</span>
+      <span class="fl">mc@entry</span><span class="fv-go">${fmt$(trade.entryMc)}</span>
+      <span class="fl">vol</span><span class="fv">${fmt$(trade.vol||0)}</span>
+      ${isClosed?`<span class="fl">pnl</span><span class="${trade.pnlUsd>=0?'fv-g':'fv-r'}">${pnlStr}</span>`:''}
+    </div>
+    <div class="faddr">
+      <a href="${pumpUrl(trade.mint)}" target="_blank" onclick="event.stopPropagation()">pump.fun/${trade.mint.slice(0,18)}…</a>
+      ${trade.dexUrl?` · <a href="${trade.dexUrl}" target="_blank" onclick="event.stopPropagation()">dex↗</a>`:''}
+    </div>
+  </div>`;
+  queues.bt.unshift(html); if(queues.bt.length>150) queues.bt.pop();
+  if(feedMode==='bt') prependFeed(html);
+}
+
+// ═══════════════════════════════════════════════════════
+//  WATCHLIST RENDER
+// ═══════════════════════════════════════════════════════
+let wlFilterMode='all';
+function wlF(el,m){
+  document.querySelectorAll('[data-wf]').forEach(b=>{b.className='ftag';});
+  const c={all:'ow',migrated:'omg',new:'ocy',held:'oy',bull:'og',moon:'og',dump:'or',highvol:'ogo'};
+  el.className='ftag '+(c[m]||'ow'); wlFilterMode=m; renderWatchList();
+}
+function wlSort(col){
+  if(wlSortCol===col) wlSortDir*=-1; else{wlSortCol=col;wlSortDir=-1;}
+  document.querySelectorAll('thead th').forEach(th=>th.classList.remove('sa','sd'));
+  const idx={sym:1,type:2,h1:3,h24:4,vol:5,liq:6,mc:7,txns:8,age:9};
+  const ths=[...document.querySelectorAll('#wl-tbody').closest('table').querySelectorAll('thead th')];
+  if(idx[col]!=null&&ths[idx[col]]) ths[idx[col]].classList.add(wlSortDir>0?'sa':'sd');
+  renderWatchList();
+}
+function renderWatchList(){
+  const tbody=document.getElementById('wl-tbody');
+  let list=[...watchList];
+  const f=wlFilterMode;
+  if(f==='migrated') list=list.filter(t=>t.type==='MIGRATED');
+  else if(f==='new') list=list.filter(t=>t.type==='NEW');
+  else if(f==='held') list=list.filter(t=>t.isHeld);
+  else if(f==='bull') list=list.filter(t=>(t.h1||0)>30);
+  else if(f==='moon') list=list.filter(t=>(t.h1||0)>100);
+  else if(f==='dump') list=list.filter(t=>(t.h1||0)<-30);
+  else if(f==='highvol') list=list.filter(t=>(t.vol||0)>10000);
+  list.sort((a,b)=>{
+    const av=wlSortCol==='sym'?a.sym:wlSortCol==='type'?a.type:wlSortCol==='h1'?(a.h1??-999):wlSortCol==='h24'?(a.h24??-999):wlSortCol==='vol'?a.vol:wlSortCol==='liq'?a.liq:wlSortCol==='mc'?a.mc:wlSortCol==='txns'?a.txns:wlSortCol==='age'?a.ts:0;
+    const bv=wlSortCol==='sym'?b.sym:wlSortCol==='type'?b.type:wlSortCol==='h1'?(b.h1??-999):wlSortCol==='h24'?(b.h24??-999):wlSortCol==='vol'?b.vol:wlSortCol==='liq'?b.liq:wlSortCol==='mc'?b.mc:wlSortCol==='txns'?b.txns:wlSortCol==='age'?b.ts:0;
+    if(typeof av==='string') return wlSortDir*(av<bv?-1:1);
+    return wlSortDir*(bv-av);
+  });
+  document.getElementById('wl-cnt').textContent=list.length+' tokens';
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="11" class="empty-msg">Nenhum token neste filtro…</td></tr>`;return;}
+  tbody.innerHTML='';
+  list.slice(0,40).forEach((t,i)=>{
+    const cl=colorFor(t.sym);
+    const h1c=t.h1==null?'neu':t.h1>=0?'up':'dn';
+    const h24c=t.h24==null?'neu':t.h24>=0?'up':'dn';
+    const typClr=t.type==='MIGRATED'?'var(--mg)':t.type==='NEW'?'var(--cyan)':'var(--t2)';
+    const isHeld=!!openPos[t.mint];
+    const isPinned=!!t.isPinned;
+    const tr=document.createElement('tr');
+    tr.className=t.type==='MIGRATED'?'amg':'an';
+    if(isHeld)   tr.classList.add('sel');
+    if(isPinned) tr.style.borderLeft='2px solid var(--gold)';
+    const clickUrl = t.pairAddr ? dexUrl(t.chainId||'solana', t.pairAddr) : pumpUrl(t.mint);
+    tr.onclick=e=>{ if(e.target.closest('.pin-btn')) return; window.open(clickUrl,'_blank'); };
+    const caShort = t.mint ? t.mint.slice(0,8)+'…'+t.mint.slice(-4) : '—';
+    tr.innerHTML=`
+      <td class="tdn">
+        <button class="pin-btn" title="${isPinned?'Unpin':'Pin'}" onclick="togglePin('${t.mint}')"
+          style="background:none;border:none;cursor:pointer;font-size:10px;color:${isPinned?'var(--gold)':'var(--t3)'};padding:0;line-height:1">
+          ${isPinned?'★':'☆'}
+        </button>
+      </td>
+      <td>
+        <span class="tok ${cl}">${t.sym}</span>${isHeld?'<span style="color:var(--yellow);font-size:8px;margin-left:3px">●</span>':''}
+        <div style="font-size:8px;color:var(--t3);margin-top:1px;font-family:monospace">${caShort}</div>
+      </td>
+      <td><span style="color:${typClr};font-size:9px;font-weight:700">${t.type}</span></td>
+      <td><span class="${h1c}">${t.h1!=null?fmtP(t.h1):'—'}</span></td>
+      <td><span class="${h24c}">${t.h24!=null?fmtP(t.h24):'—'}</span></td>
+      <td style="color:var(--white)">${fmt$(t.vol)}</td>
+      <td style="color:var(--t1)">${fmt$(t.liq)}</td>
+      <td style="color:var(--white);font-weight:500">${fmt$(t.mc)}</td>
+      <td style="color:var(--t2)">${(t.txns||0).toLocaleString()}</td>
+      <td data-ts="${t.ts}" style="color:var(--t2)">${fmtAge(t.ts)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  BOT TRADES RENDER
+// ═══════════════════════════════════════════════════════
+let botFilterMode='all';
+function botF(el,m){
+  document.querySelectorAll('[data-bf]').forEach(b=>b.className='ftag');
+  const c={all:'ow',open:'oy',closed:'ow',wins:'og',losses:'or',tp:'og',sl:'or',big:'ogo'};
+  el.className='ftag '+(c[m]||'ow'); botFilterMode=m; renderBot();
+}
+function renderBot(){
+  const scr=document.getElementById('bot-scroll');
+  const mcMin=parseFloat(document.getElementById('mc-min').value)||0;
+  const mcMax=parseFloat(document.getElementById('mc-max').value)||Infinity;
+  let list=[...botTrades];
+  if(botFilterMode==='open')   list=list.filter(t=>t.status==='OPEN');
+  if(botFilterMode==='closed') list=list.filter(t=>t.status!=='OPEN');
+  if(botFilterMode==='wins')   list=list.filter(t=>t.status!=='OPEN'&&t.pnlUsd>=0);
+  if(botFilterMode==='losses') list=list.filter(t=>t.status!=='OPEN'&&t.pnlUsd<0);
+  if(botFilterMode==='tp')     list=list.filter(t=>t.status==='TP');
+  if(botFilterMode==='sl')     list=list.filter(t=>t.status==='SL');
+  if(botFilterMode==='big')    list=list.filter(t=>t.pnlUsd>=5);
+  if(mcMin>0||mcMax<Infinity)  list=list.filter(t=>t.entryMc>=mcMin&&t.entryMc<=mcMax);
+  document.getElementById('bot-cnt').textContent=list.length+' trades';
+  if(!list.length){scr.innerHTML='<div class="empty-msg">Nenhum trade neste filtro…<br><span style="font-size:9px">Os trades aparecem 15-20s após o sinal do bot</span></div>';return;}
+  scr.innerHTML='';
+  list.slice(0,80).forEach(t=>{
+    const isOpen=t.status==='OPEN',isWin=!isOpen&&t.pnlUsd>=0;
+    const pnlCl=isOpen?'open':isWin?'pos':'neg';
+    const pnlTxt=isOpen?`${fmtP(t.pnlPct)} live`:`${t.pnlUsd>=0?'+':''}${fmt$(t.pnlUsd)}`;
+    const stCl=isOpen?'bst-open':t.status==='TP'?'bst-tp':t.status==='SL'?'bst-sl':'bst-time';
+    const cl=colorFor(t.sym);
+    const caShort=t.mint?t.mint.slice(0,10)+'…'+t.mint.slice(-6):'';
+    // Links: pump.fun (primary), dexscreener pair (secondary), solscan (CA explorer)
+    const primaryUrl = t.dexUrl || t.url || pumpUrl(t.mint);
+    const row=document.createElement('div');
+    row.className='brow';
+    row.innerHTML=`
+      <div class="bside b">BUY</div>
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;gap:5px">
+          <span class="bsym ${cl}" style="cursor:pointer" onclick="event.stopPropagation();window.open('${primaryUrl}','_blank')">${t.sym}</span>
+          <span style="font-size:8px;color:var(--t3)">${t.type}</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:2px;font-size:9px">
+          <a href="${pumpUrl(t.mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--lb);text-decoration:none">pump.fun</a>
+          ${t.dexUrl?`<a href="${t.dexUrl}" target="_blank" onclick="event.stopPropagation()" style="color:var(--cyan);text-decoration:none">dexscr</a>`:''}
+          <a href="${solscanT(t.mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--t3);text-decoration:none">${caShort}</a>
+        </div>
+      </div>
+      <div class="bdet" style="text-align:right">
+        ${fmtSol(t.entrySol)}<br>
+        <span style="font-size:9px;color:var(--t3)">${fmt$(t.entryMc)}</span>
+      </div>
+      <div style="font-size:9px;color:var(--t2);display:flex;flex-direction:column;gap:1px;padding:0 6px;min-width:70px;text-align:right">
+        <span>vol <span style="color:var(--white)">${fmt$(t.vol||0)}</span></span>
+        <span>liq <span style="color:var(--t1)">${fmt$(t.liq||0)}</span></span>
+      </div>
+      <div class="bpnl ${pnlCl}">
+        ${pnlTxt}
+        <div style="margin-top:1px"><span class="bst ${stCl}">${isOpen?'OPEN':t.status}</span>${!isOpen?`<span style="color:var(--t3);font-size:9px"> · ${fmtAge(t.closedTs)}</span>`:''}</div>
+      </div>
+      <div class="btm" data-ts="${t.ts}">${fmtAge(t.ts)}</div>`;
+    scr.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATS UPDATE
+// ═══════════════════════════════════════════════════════
+function updateStats(){
+  const openVals=Object.values(openPos);
+  const openN=openVals.length;
+  const unreal=openVals.reduce((s,t)=>s+t.pnlUsd,0);
+  const closed=botTrades.filter(t=>t.status!=='OPEN');
+  const wr=totalTrades>0?Math.round(wins/totalTrades*100):0;
+  const best=closed.reduce((m,t)=>t.pnlUsd>m?t.pnlUsd:m,-Infinity);
+  const worst=closed.reduce((m,t)=>t.pnlUsd<m?t.pnlUsd:m,Infinity);
+  const avgPnl=closed.length?closed.reduce((s,t)=>s+t.pnlUsd,0)/closed.length:0;
+  const roi=(realPnl/(BOT_BUDGET*SOL_USD))*100;
+
+  const pe=document.getElementById('pnl-real');
+  pe.textContent=(realPnl>=0?'+':'')+fmt$(realPnl); pe.className='pbig '+(realPnl>=0?'pos':'neg');
+  document.getElementById('pnl-sub').textContent=`${totalTrades} closed · ROI ${roi>=0?'+':''}${roi.toFixed(2)}%`;
+  document.getElementById('pnl-unreal').textContent=(unreal>=0?'+':'')+fmt$(unreal);
+  document.getElementById('pnl-unreal').style.color=unreal>=0?'var(--yellow)':'var(--red)';
+  document.getElementById('pnl-unreal-sub').textContent=openN+' posições abertas';
+  document.getElementById('pnl-bal').textContent=botBal.toFixed(3)+' ◎';
+  document.getElementById('pnl-usd').textContent=fmt$(botBal*SOL_USD);
+  document.getElementById('s-tc').textContent=totalTrades;
+  document.getElementById('s-wr').textContent=wr+'%';
+  document.getElementById('s-best').textContent=best!=-Infinity?(best>=0?'+':'')+fmt$(best):'—';
+  document.getElementById('s-worst').textContent=worst!=Infinity?(worst>=0?'+':'')+fmt$(worst):'—';
+  document.getElementById('s-open').textContent=openN;
+  document.getElementById('pw').textContent=wins; document.getElementById('pl').textContent=losses;
+  document.getElementById('po').textContent=openN;
+  document.getElementById('proi').textContent=(roi>=0?'+':'')+roi.toFixed(2)+'%';
+  document.getElementById('proi').style.color=roi>=0?'var(--gold)':'var(--red)';
+  document.getElementById('pavg').textContent=closed.length?fmt$(avgPnl):'—';
+  document.getElementById('pavg').style.color=avgPnl>=0?'var(--green)':'var(--red)';
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPARKLINE
+// ═══════════════════════════════════════════════════════
+function drawChart(){
+  const c=document.getElementById('spark'),ctx=c.getContext('2d');
+  const W=c.parentElement.offsetWidth,H=52; c.width=W;c.height=H;
+  ctx.clearRect(0,0,W,H);
+  if(pnlHist.length<2) return;
+  const mx=Math.max(...pnlHist,0),mn=Math.min(...pnlHist,0),rng=mx-mn||1,pd=5;
+  const pts=pnlHist.map((_,i)=>({x:pd+(W-pd*2)*(i/(pnlHist.length-1)),y:H-pd-(H-pd*2)*((pnlHist[i]-mn)/rng)}));
+  const isPos=pnlHist[pnlHist.length-1]>=0,col=isPos?'#00e87a':'#ff2d55';
+  const zY=H-pd-(H-pd*2)*((0-mn)/rng);
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+  ctx.beginPath();ctx.moveTo(pd,zY);ctx.lineTo(W-pd,zY);ctx.stroke();ctx.setLineDash([]);
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,isPos?'rgba(0,232,122,.2)':'rgba(255,45,85,.16)');g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();ctx.moveTo(pts[0].x,H);pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,H);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=1.5;pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();
+  const lp=pts[pts.length-1];ctx.beginPath();ctx.arc(lp.x,lp.y,3,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+}
+window.addEventListener('resize',drawChart);
+
+// ═══════════════════════════════════════════════════════
+//  FEED
+// ═══════════════════════════════════════════════════════
+function pushFeedItem(type,item){
+  const minSol=parseFloat(document.getElementById('feed-sol').value)||0;
+  const minMc=parseFloat(document.getElementById('feed-mc').value)||0;
+  if((item.solAmt||0)<minSol) return;
+  if((item.mcUsd||0)<minMc) return;
+  const html=makeFI(item);
+  queues[type].unshift(html); if(queues[type].length>150) queues[type].pop();
+  if(feedMode===type) prependFeed(html);
+}
+function prependFeed(html){
+  const fl=document.getElementById('flist');
+  const em=fl.querySelector('.empty-msg'); if(em) em.remove();
+  const tmp=document.createElement('div'); tmp.innerHTML=html;
+  fl.prepend(tmp.firstElementChild);
+  while(fl.children.length>150) fl.removeChild(fl.lastChild);
+}
+function applyFeedFilter(){ renderFeed(); }
+function renderFeed(){
+  const fl=document.getElementById('flist');
+  if(!queues[feedMode].length){fl.innerHTML='<div class="empty-msg">Sem eventos neste feed…</div>';return;}
+  fl.innerHTML='';
+  queues[feedMode].forEach(h=>{ const tmp=document.createElement('div'); tmp.innerHTML=h; fl.appendChild(tmp.firstElementChild); });
+}
+function makeFI({badge,bc,sc,isMg,sym,t,rows,mint,sig,pairUrl}){
+  const mgCls=isMg?'fi-mg':'';
+  const rowH=rows.map(r=>`<span class="fl">${r.l}</span><span class="${r.vc||'fv'}">${r.v}</span>`).join('');
+  const clickUrl = pairUrl || pumpUrl(mint);
+  const addr=mint?`<a href="${pumpUrl(mint)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--lb)">pump.fun</a> · <a href="${solscanT(mint)}" target="_blank" onclick="event.stopPropagation()">${mint.slice(0,14)}…${mint.slice(-6)}</a>`:'';
+  const txl=sig?` · <a href="${solscanTx(sig)}" target="_blank" onclick="event.stopPropagation()">tx↗</a>`:'';
+  const dexl=pairUrl?` · <a href="${pairUrl}" target="_blank" onclick="event.stopPropagation()">dex↗</a>`:'';
+  return `<div class="fi ${mgCls}" onclick="window.open('${clickUrl}','_blank')">
+    <div class="fi-top"><span class="fb ${bc}">${badge}</span><span class="fsym ${sc}">${sym}</span><span class="ft">${t}</span></div>
+    <div class="frow">${rowH}</div>
+    <div class="faddr">${addr}${dexl}${txl}</div>
+  </div>`;
+}
+function sf(m){
+  feedMode=m;
+  ['nw','tr','mg','bt'].forEach(x=>{ document.getElementById('ft'+x).className='ftag'+(x===m?' ocy':''); });
+  renderFeed();
+}
+
+// ═══════════════════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════════════════
+function setTab(el,tab){
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on')); el.classList.add('on');
+  activeTab=tab;
+  if(tab==='watch') renderWatchList();
+  if(tab==='bot')   renderBot();
+}
+
+// ── Pin / Unpin token in watchlist ────────────────────
+function togglePin(mint){
+  const tok = watchList.find(t=>t.mint===mint);
+  if(!tok) return;
+  tok.isPinned = !tok.isPinned;
+  // Update the shared pinned set
+  if(!window._pinnedMints) window._pinnedMints = new Set();
+  tok.isPinned ? window._pinnedMints.add(mint) : window._pinnedMints.delete(mint);
+  lsSave();
+  renderWatchList();
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOCAL STORAGE — persist trades, PnL, config
+//  Keys:  LB_TRADES · LB_PNL · LB_CONFIG · LB_WATCHPIN
+// ═══════════════════════════════════════════════════════
+const LS = {
+  TRADES:   'lb_trades_v2',
+  PNL:      'lb_pnl_v2',
+  CONFIG:   'lb_config_v2',
+  WATCHPIN: 'lb_watchpin_v2',
+};
+
+// ── Save ──────────────────────────────────────────────
+function lsSave(){
+  try{
+    // Only persist closed trades + open positions (not PENDING)
+    const toSave = botTrades.filter(t => t.status !== 'PENDING').map(t=>({
+      id:t.id, sym:t.sym, name:t.name, mint:t.mint,
+      url:t.url, pumpUrl:t.pumpUrl, dexUrl:t.dexUrl||null,
+      type:t.type, side:'BUY',
+      entrySol:t.entrySol, entryMc:t.entryMc,
+      currentMc:t.currentMc, pnlUsd:t.pnlUsd, pnlPct:t.pnlPct,
+      status:t.status, ts:t.ts, closedTs:t.closedTs||null,
+      vol:t.vol||0, liq:t.liq||0,
+    }));
+    // Limit to last 200 trades to stay within ~2MB
+    const trimmed = toSave.slice(0, 200);
+    localStorage.setItem(LS.TRADES, JSON.stringify(trimmed));
+    localStorage.setItem(LS.PNL, JSON.stringify({
+      realPnl, botBal, wins, losses, totalTrades,
+      pnlHist: pnlHist.slice(-100),
+      savedAt: Date.now(),
+    }));
+    // Pinned watchlist tokens
+    const pinned = watchList.filter(t=>t.isPinned).map(t=>t.mint);
+    localStorage.setItem(LS.WATCHPIN, JSON.stringify(pinned));
+  } catch(e){ console.warn('[LS] Save failed (storage full?)', e); lsPrune(); }
+}
+
+// ── Load ──────────────────────────────────────────────
+function lsLoad(){
+  try{
+    // Load PnL state
+    const pnlRaw = localStorage.getItem(LS.PNL);
+    if(pnlRaw){
+      const p = JSON.parse(pnlRaw);
+      realPnl     = p.realPnl     ?? 0;
+      botBal      = p.botBal      ?? BOT_BUDGET;
+      wins        = p.wins        ?? 0;
+      losses      = p.losses      ?? 0;
+      totalTrades = p.totalTrades ?? 0;
+      pnlHist     = p.pnlHist?.length ? p.pnlHist : [0];
+      console.log(`[LS] Restored PnL: ${fmt$(realPnl)} · ${totalTrades} trades · saved ${fmtAge(p.savedAt)} ago`);
+    }
+
+    // Load trades
+    const tradesRaw = localStorage.getItem(LS.TRADES);
+    if(tradesRaw){
+      const saved = JSON.parse(tradesRaw);
+      botTrades = saved;
+      // Restore open positions to openPos map
+      saved.filter(t=>t.status==='OPEN').forEach(t=>{ openPos[t.mint]=t; });
+      console.log(`[LS] Restored ${saved.length} trades (${Object.keys(openPos).length} open)`);
+    }
+
+    // Load pinned tokens
+    const pinnedRaw = localStorage.getItem(LS.WATCHPIN);
+    if(pinnedRaw){
+      const pinned = new Set(JSON.parse(pinnedRaw));
+      // Will apply when watchlist loads
+      window._pinnedMints = pinned;
+    }
+  } catch(e){ console.warn('[LS] Load failed', e); }
+}
+
+// ── Prune (free space if quota exceeded) ──────────────
+function lsPrune(){
+  try{
+    // Keep only last 50 trades
+    const raw = localStorage.getItem(LS.TRADES);
+    if(raw){ const t=JSON.parse(raw); localStorage.setItem(LS.TRADES, JSON.stringify(t.slice(0,50))); }
+    console.warn('[LS] Pruned trades to 50 to free space');
+  } catch(e){ console.error('[LS] Prune failed', e); }
+}
+
+// ── Clear all (reset button) ──────────────────────────
+function lsClear(){
+  if(!confirm('⚠️ Limpar todo o histórico de trades e PnL?\nEsta ação não pode ser desfeita.')) return;
+  Object.values(LS).forEach(k=>localStorage.removeItem(k));
+  realPnl=0; botBal=BOT_BUDGET; wins=0; losses=0; totalTrades=0;
+  pnlHist=[0]; botTrades=[]; openPos={};
+  updateStats(); renderBot(); drawChart();
+  console.log('[LS] Cleared all data');
+  alert('✅ Histórico limpo. Recarregando…');
+  location.reload();
+}
+
+// ── Storage usage display ─────────────────────────────
+function lsUsage(){
+  try{
+    let total=0;
+    Object.values(LS).forEach(k=>{ const v=localStorage.getItem(k); if(v) total+=v.length; });
+    const kb = (total/1024).toFixed(1);
+    const pct = ((total/(5*1024*1024))*100).toFixed(1);
+    document.getElementById('ls-usage').textContent = `cache: ${kb}KB / 5MB (${pct}%)`;
+  } catch(e){}
+}
+
+// ── Auto-save every 8 seconds ─────────────────────────
+setInterval(()=>{ lsSave(); lsUsage(); }, 8000);
+
+// ── Hook lsSave into botClose so closures persist immediately
+const _origBotClose2 = botClose;
+botClose = function(mint, reason){
+  _origBotClose2(mint, reason);
+  // Save is already called via the 8s interval, but also on close for reliability
+  setTimeout(lsSave, 200);
+};
+
+// ── Export trades as JSON ─────────────────────────────
+function exportTrades(){
+  const data = {
+    exportedAt: new Date().toISOString(),
+    summary: { realPnl, botBal, wins, losses, totalTrades, roi: ((realPnl/(BOT_BUDGET*SOL_USD))*100).toFixed(2)+'%' },
+    trades: botTrades,
+    pnlHistory: pnlHist,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download=`lobster-trades-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════
+lsLoad();           // restore state from localStorage FIRST
+updateStats();      // apply restored PnL/balance to UI
+drawChart();
+fetchRealTokens();
+setInterval(fetchRealTokens, FETCH_INTERVAL);
+connectWS();
+lsUsage();          // show initial usage in status bar
+</script>
+</body>
+</html>
